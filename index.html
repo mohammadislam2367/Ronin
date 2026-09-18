@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#05060e"/>
+<title>RONIN STORE — CYBER ANIME V17</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<style>
+:root{--bg:#05060e;--tx:#eef0ff;--mut:#8f93b8;--vio:#8b5cf6;--cyan:#22d3ee;--mag:#e879f9;--gold:#fbbf24;--grn:#34d399;--red:#fb7185;--line:rgba(120,220,255,.18);--glass:rgba(10,14,32,.66);--r:16px}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:Vazirmatn,system-ui,Tahoma,sans-serif;overflow-x:hidden;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;border:none;background:none}
+:focus-visible{outline:2px solid #67e8f9;outline-offset:2px}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#2a2f5e;border-radius:20px}
+.hidden{display:none!important}
+/* CITY BG */
+#city{position:fixed;inset:0;z-index:-3;overflow:hidden;background:linear-gradient(180deg,#080a1c 0%,#0b0d24 40%,#120a2a 70%,#05060e 100%)}
+.grid{position:absolute;bottom:0;height:38%;right:-20%;left:-20%;background:linear-gradient(rgba(34,211,238,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.14) 1px,transparent 1px);background-size:44px 34px;transform:perspective(320px) rotateX(58deg);transform-origin:top;mask-image:linear-gradient(0deg,#000 30%,transparent 95%);animation:gz 6s linear infinite}
+@keyframes gz{to{background-position:0 34px}}
+.sky{position:absolute;bottom:26%;right:0;left:0;height:34%;opacity:.95}
+.win{animation:flick 3.4s steps(2) infinite}
+.win:nth-child(odd){animation-delay:1.7s;animation-duration:4.2s}
+@keyframes flick{50%{opacity:.25}}
+.sign{position:absolute;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:1px;opacity:.85;animation:sbuzz 2.8s ease-in-out infinite}
+@keyframes sbuzz{50%{opacity:.35;filter:brightness(.7)}}
+.scan{position:fixed;inset:0;z-index:58;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.012) 3px 4px);mix-blend-mode:overlay}
+.stars,.stars.b{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 15% 18%,#fff8,transparent 60%),radial-gradient(1px 1px at 66% 9%,#fff6,transparent 60%),radial-gradient(1.4px 1.4px at 40% 30%,#fff5,transparent 60%),radial-gradient(1px 1px at 82% 22%,#fff7,transparent 60%),radial-gradient(1.5px 1.5px at 28% 12%,#fff5,transparent 60%);animation:tw 5s ease-in-out infinite alternate}
+.stars.b{transform:rotate(14deg);animation-delay:2s;opacity:.55}
+@keyframes tw{from{opacity:.45}to{opacity:1}}
+#moon2{position:absolute;top:5vh;left:10vw;width:min(120px,18vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fdf6ff,#dcc8ff 55%,#9f7bff);box-shadow:0 0 50px 14px #8b5cf655;opacity:.9}
+.petal{position:fixed;top:-6vh;z-index:-1;font-size:13px;opacity:.6;animation:fall linear infinite;pointer-events:none}
+@keyframes fall{0%{transform:translate(0,-6vh) rotate(0)}25%{transform:translate(-4vw,28vh) rotate(160deg)}50%{transform:translate(3vw,55vh) rotate(320deg)}75%{transform:translate(-3vw,80vh) rotate(480deg)}100%{transform:translate(1vw,110vh) rotate(680deg)}}
+@media(max-width:700px){.petal:nth-of-type(n+6){display:none}.grid{background-size:34px 26px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+/* UI */
+.g{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 16px 44px rgba(0,0,0,.5)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:12px;font-weight:800;background:linear-gradient(90deg,#7c3aed,#0891b2);color:#fff;box-shadow:0 0 0 1px #22d3ee44,0 8px 24px #7c3aed44;transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px #22d3ee88,0 10px 30px #22d3ee55}
+.btn.sm{padding:8px 14px;border-radius:10px;font-size:13px}
+.btn.gold{background:linear-gradient(90deg,#d97706,#fbbf24);color:#241b00}
+.btn.ghost{background:rgba(255,255,255,.06);box-shadow:none;border:1px solid var(--line)}
+.mini{padding:6px 12px;border-radius:9px;background:rgba(255,255,255,.08);border:1px solid var(--line);font-size:12.5px}
+.in{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:rgba(3,5,14,.7)}
+select.in{width:auto;padding:8px 10px;font-size:12.5px}
+.bdg{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:rgba(255,255,255,.06)}
+.bdg.gold{background:linear-gradient(90deg,#d97706,#fbbf24);color:#241b00;font-weight:800;border:none}
+.bdg.cyan{background:linear-gradient(90deg,#0891b2,#22d3ee);color:#03222b;font-weight:800;border:none}
+.bdg.grn{background:#05966933;border-color:#34d39955;color:#a7f3d0}
+.bdg.red{background:#e11d4833;border-color:#fb718555;color:#fecdd3}
+.mut{color:var(--mut)}
+#top{position:fixed;top:10px;right:12px;left:12px;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:14px;background:rgba(8,10,24,.6);border:1px solid var(--line);backdrop-filter:blur(18px);box-shadow:0 0 24px rgba(34,211,238,.08);transition:.3s}
+#top.sc{top:6px;padding:6px 12px;background:rgba(6,8,18,.85)}
+.logo{font-weight:900;letter-spacing:1px;font-size:19px;background:linear-gradient(90deg,#a78bfa,#22d3ee,#e879f9);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 6s linear infinite}
+@keyframes sh{to{background-position:200%}}
+#srch{flex:1;max-width:240px;margin-inline-start:auto;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(3,5,14,.7);font-size:13.5px}
+.icobtn{position:relative;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+#bellDot{position:absolute;top:-5px;left:-5px;min-width:17px;height:17px;border-radius:99px;background:#e11d48;font-size:10px;font-weight:800;display:grid;place-items:center;padding:0 3px}
+#avTop{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--vio),var(--cyan));border:1px solid #fff3}
+#notifPanel{position:fixed;top:64px;left:12px;z-index:60;width:min(340px,92vw);max-height:60vh;overflow-y:auto;padding:12px}
+#shell{display:flex;min-height:100vh}
+#side{display:none}
+#main{flex:1;min-width:0;padding:86px 14px 96px;max-width:1200px;margin:0 auto}
+@media(min-width:1024px){#side{display:flex;flex-direction:column;gap:4px;position:sticky;top:86px;height:calc(100vh - 100px);width:212px;flex-shrink:0;margin:86px 14px 20px 0;padding:14px 10px;border-radius:16px;clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%)}#side .slogo{text-align:center;font-size:17px;padding:6px 0 12px;border-bottom:1px solid var(--line);margin-bottom:10px}.snav{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:10px;color:var(--mut);font-weight:700;font-size:14px;position:relative;transition:.2s;width:100%}.snav:hover{background:rgba(34,211,238,.08);color:#fff}.snav.on{color:#fff;background:linear-gradient(90deg,#7c3aed55,#0891b233);box-shadow:inset 0 0 0 1px #22d3ee44}.snav.on:before{content:"";position:absolute;right:-10px;top:18%;bottom:18%;width:3px;border-radius:9px;background:linear-gradient(180deg,#a78bfa,#22d3ee);box-shadow:0 0 12px #22d3ee}.snav .bdg{margin-inline-start:auto}.ssep{height:1px;background:var(--line);margin:9px 6px}#botnav{display:none}#main{padding-bottom:40px}}
+#botnav{position:fixed;bottom:0;right:0;left:0;z-index:50;display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:rgba(6,8,20,.9);backdrop-filter:blur(20px);border-top:1px solid var(--line)}
+#botnav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--mut);padding:5px 10px;border-radius:10px;position:relative}
+#botnav button.on{color:#fff;background:linear-gradient(180deg,#7c3aed55,transparent);box-shadow:inset 0 -2px 0 #22d3ee}
+#botnav .dot{position:absolute;top:2px;right:8px;min-width:15px;height:15px;border-radius:99px;background:#e11d48;font-size:9.5px;font-weight:800;display:grid;place-items:center;padding:0 3px}
+/* HERO CYBER */
+.hero{position:relative;border-radius:4px 26px 4px 26px;overflow:hidden;border:1px solid var(--line);min-height:380px;display:flex;align-items:center;box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 40px rgba(139,92,246,.2);background:linear-gradient(200deg,#1a1045 0%,#101538 45%,#0a0d22 100%);clip-path:polygon(0 0,100% 0,100% calc(100% - 34px),calc(100% - 34px) 100%,0 100%)}
+.hgrid{position:absolute;inset:0;background:linear-gradient(rgba(34,211,238,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(circle at 60% 40%,#000,transparent 75%)}
+.hcity2{position:absolute;bottom:0;right:0;left:0;height:46%;opacity:.9}
+.hbeam{position:absolute;top:-30%;width:90px;height:130%;background:linear-gradient(180deg,transparent,rgba(232,121,249,.14),transparent);transform:rotate(18deg);animation:beam 7s ease-in-out infinite alternate}
+@keyframes beam{to{transform:rotate(18deg) translateX(60vw)}}
+.hpanel{position:relative;z-index:3;margin:34px;padding:22px;max-width:440px;border-radius:6px 20px 6px 20px;background:rgba(8,12,30,.6);border:1px solid #22d3ee44;backdrop-filter:blur(12px);box-shadow:0 0 30px rgba(34,211,238,.12)}
+.hpanel:before{content:"RONIN.OS";position:absolute;top:-9px;right:18px;font-size:9px;font-weight:900;letter-spacing:2px;color:#22d3ee;background:#0a0d22;padding:1px 8px;border:1px solid #22d3ee44;border-radius:4px}
+.hpanel h1{font-size:clamp(24px,4.5vw,38px);font-weight:900;line-height:1.3;background:linear-gradient(90deg,#e9d5ff,#67e8f9,#f5d0fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hpanel p{color:var(--mut);font-size:13.5px;margin:8px 0 16px}
+.fchip{position:absolute;z-index:3;padding:8px 13px;border-radius:8px;background:rgba(8,12,30,.7);border:1px solid #e879f944;backdrop-filter:blur(8px);font-size:11.5px;font-weight:800;animation:fl 4s ease-in-out infinite;color:#f5d0fe}
+@keyframes fl{50%{transform:translateY(-8px)}}
+@media(max-width:700px){.hero{min-height:320px}.hpanel{margin:16px;padding:15px}.fchip{display:none}}
+.wrap{padding:20px 2px}
+.hsec{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:16.5px;font-weight:900}
+.hsec:before{content:"▍";color:#22d3ee}
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+.tile{position:relative;padding:16px;border-radius:6px 18px 6px 18px;overflow:hidden;transition:.25s;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(12px);text-align:right}
+.tile:hover{transform:translateY(-4px);border-color:#22d3ee77;box-shadow:0 14px 36px rgba(34,211,238,.18)}
+.tile .ticon{font-size:26px;display:inline-block}
+.tile h4{font-size:14.5px;margin:8px 0 4px}.tile p{font-size:11.5px;color:var(--mut);margin-bottom:10px}
+.t1{background:linear-gradient(145deg,#3b076488,#0a0d22dd)}.t2{background:linear-gradient(145deg,#08334488,#0a0d22dd)}.t3{background:linear-gradient(145deg,#4a044e88,#0a0d22dd)}.t4{background:linear-gradient(145deg,#42200688,#0a0d22dd)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.hscroll{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.acard{scroll-snap-align:start;flex:0 0 150px;border-radius:6px 16px 6px 16px;overflow:hidden;border:1px solid var(--line);transition:.25s;background:var(--glass)}
+.acard:hover{transform:translateY(-5px);border-color:#22d3ee88;box-shadow:0 14px 34px rgba(34,211,238,.2)}
+.aposter{height:170px;display:grid;place-items:center;font-size:44px;position:relative}
+.aposter:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0a0d22dd,transparent 55%)}
+.ainfo{padding:10px 12px}
+.rate{color:var(--gold);font-size:11px;font-weight:800}
+.gchip{padding:7px 14px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:12.5px;font-weight:700;color:var(--mut)}
+.gchip.on{background:linear-gradient(90deg,#7c3aed66,#0891b244);color:#fff;border-color:#22d3ee66}
+.pcard{border-radius:6px 16px 6px 16px;border:1px solid var(--line);overflow:hidden;background:var(--glass);backdrop-filter:blur(12px);transition:.25s}
+.pcard:hover{border-color:#22d3ee88}
+.pposter{height:120px;display:grid;place-items:center;font-size:46px}
+.pinfo{padding:12px 14px}
+.price{color:var(--gold);font-weight:900;font-size:14.5px}
+.stk{font-size:10.5px;color:var(--grn)}
+.gridp{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:13px}
+.avatar{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:900;color:#fff;flex-shrink:0}
+.feed{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);margin-bottom:9px}
+.stori{flex:0 0 auto;width:60px;text-align:center;font-size:10.5px;color:var(--mut)}
+.stori .ring{width:56px;height:56px;border-radius:50%;padding:3px;background:conic-gradient(#a78bfa,#22d3ee,#e879f9,#a78bfa);margin:0 auto 5px}
+.stori .ring>div{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff;background:#101538;border:2.5px solid #0a0d22}
+.chatbox{height:46vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:14px;background:rgba(2,4,12,.6);border:1px solid var(--line);border-radius:12px}
+.msg{max-width:82%;padding:9px 13px;border-radius:14px 14px 14px 4px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13.5px;word-break:break-word;animation:pop .25s ease}
+.msg.me{align-self:flex-end;border-radius:14px 14px 4px 14px;background:linear-gradient(90deg,#7c3aed66,#0891b244)}
+.msg.me.prem{border-color:#fbbf2477}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.mmeta{font-size:10.5px;color:var(--mut);display:flex;gap:6px;align-items:center;margin-bottom:3px}
+.reac{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.reac span{font-size:11px;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.09);border:1px solid var(--line);cursor:pointer}
+.addre{opacity:.55}.mdel{opacity:.45;font-size:10px;cursor:pointer;margin-inline-start:6px}
+.urow{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;flex-wrap:wrap;background:rgba(255,255,255,.03)}
+.stat{padding:13px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(124,58,237,.14),rgba(10,13,34,.7));text-align:center}
+.stat b{font-size:clamp(18px,4vw,28px);font-weight:900;display:block;background:linear-gradient(90deg,#e9d5ff,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:11px;color:var(--mut)}
+.chart{display:flex;align-items:flex-end;gap:7px;height:110px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(2,4,12,.5)}
+.chart i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#22d3ee,#7c3aed55);min-height:4px;box-shadow:0 0 10px #22d3ee33}
+.tl{border-inline-start:2px solid #7c3aed55;padding-inline-start:14px}
+.tl .ev{position:relative;padding:6px 0;font-size:12.5px;color:var(--mut)}
+.tl .ev:before{content:"";position:absolute;right:-19.5px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--cyan)}
+.fab{position:fixed;bottom:76px;left:16px;z-index:47;width:52px;height:52px;border-radius:16px;font-size:22px;display:grid;place-items:center;background:linear-gradient(135deg,#7c3aed,#0891b2);box-shadow:0 0 0 1px #22d3ee66,0 12px 30px #7c3aed88}
+@media(min-width:1024px){.fab{display:none}}
+/* GUIDE NPC */
+#npc{position:fixed;bottom:88px;left:6px;z-index:46;width:86px;pointer-events:none;text-align:center}
+@media(min-width:1024px){#npc{bottom:20px;width:100px}}
+#npc .bub{display:none;position:absolute;bottom:105%;right:-40px;left:-40px;background:#0d1130;border:1px solid #22d3ee66;border-radius:10px;padding:7px 9px;font-size:10.5px;font-weight:700;color:#cffafe;box-shadow:0 8px 22px #000a;animation:pop .3s ease}
+#npc .bub.show{display:block}
+#npc .bub:after{content:"";position:absolute;top:100%;right:50%;margin-right:-5px;border:5px solid transparent;border-top-color:#22d3ee66}
+#npc svg{animation:sway 3.2s ease-in-out infinite;filter:drop-shadow(0 8px 16px #0009)}
+@keyframes sway{50%{transform:rotate(-4deg) translateY(-3px)}}
+#npcBtn{position:absolute;inset:0;background:transparent;border:none;pointer-events:auto;cursor:pointer;border-radius:20px}
+#npc.wave svg{animation:wavey .5s ease-in-out 3}
+@keyframes wavey{50%{transform:rotate(-14deg) translateY(-6px)}}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(8,10,26,.97);border:1px solid var(--line);padding:11px 20px;border-radius:12px;z-index:99;opacity:0;transition:.3s;max-width:92vw;font-size:13.5px}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#toast.bad{border-color:var(--red)}
+.empty{color:var(--mut);font-size:13px;padding:10px 2px}
+.sec2{margin-top:26px}
+#aErr{color:var(--red);font-size:12px;min-height:16px;margin-bottom:8px;text-align:center}
+.cmt{font-size:12px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.05);margin-top:5px}
+.cmtin{flex:1;font-size:12.5px;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(3,5,14,.7);color:var(--tx)}
+.lk{font-size:12px;padding:5px 11px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+.lk.on{background:linear-gradient(90deg,#e11d4855,#fb718533);border-color:#fb718566}
+</style>
+</head>
+<body>
+<div id="city">
+ <div class="stars"></div><div class="stars b"></div><div id="moon2"></div>
+ <svg class="sky" viewBox="0 0 1200 260" preserveAspectRatio="none">
+  <g fill="#0a0c22"><path d="M40 260V150h30v-14h14v14h30v110zM200 260V110l40-52 40 52v150zM380 260v-80h26v-16h16v16h26v80zM760 260V130l34-44 34 44v130zM950 260v-95h28v-14h16v14h28v95z"/></g>
+  <g fill="#101538"><path d="M480 260V80l60-70 60 70v180zM620 260v-110h30v-18h20v18h30v110zM1080 260V150l40-50 40 50v110z"/></g>
+  <g fill="#1a1045"><path d="M540 60l18-20 18 20zM300 260v-60h20v-12h14v12h20v60z"/></g>
+  <g fill="#22d3ee" class="win"><rect x="496" y="100" width="8" height="8"/><rect x="560" y="120" width="8" height="8"/><rect x="640" y="160" width="8" height="8"/><rect x="210" y="140" width="8" height="8"/><rect x="780" y="150" width="8" height="8"/></g>
+  <g fill="#e879f9" class="win"><rect x="520" y="150" width="8" height="8"/><rect x="970" y="180" width="8" height="8"/><rect x="390" y="200" width="8" height="8"/><rect x="1100" y="180" width="8" height="8"/></g>
+ </svg>
+ <span class="sign" style="bottom:32%;right:12%;background:#e879f922;color:#f5d0fe;border:1px solid #e879f966">アニメ</span>
+ <span class="sign" style="bottom:38%;left:14%;background:#22d3ee22;color:#a5f3fc;border:1px solid #22d3ee66;animation-delay:1.2s">RONIN</span>
+ <span class="sign" style="bottom:29%;right:38%;background:#7c3aed33;color:#ddd6fe;border:1px solid #a78bfa66;animation-delay:2s">STORE</span>
+ <div class="grid"></div>
+</div>
+<div class="scan"></div>
+<span class="petal" style="left:8%;animation-duration:12s">🌸</span><span class="petal" style="left:24%;animation-duration:15s;animation-delay:2s">🌸</span><span class="petal" style="left:44%;animation-duration:13s;animation-delay:5s">🌸</span><span class="petal" style="left:63%;animation-duration:14s;animation-delay:1s">🌸</span><span class="petal" style="left:81%;animation-duration:12.5s;animation-delay:7s">🌸</span><span class="petal" style="left:93%;animation-duration:15s;animation-delay:4s">🌸</span>
+<div id="toast"></div>
+<div id="notifPanel" class="g hidden"><div class="hsec" style="font-size:14px">🔔 سیگنال‌ها <button class="mini" style="margin-inline-start:auto" onclick="closeNotifs()">بستن</button></div><div id="notifList"></div></div>
+
+<section id="authScreen" style="min-height:100vh;display:grid;place-items:center;padding:16px">
+ <div class="g" style="width:100%;max-width:400px;padding:28px">
+  <div class="logo" style="font-size:30px;text-align:center">RONIN STORE</div>
+  <p class="mut" style="text-align:center;font-size:12.5px;margin:6px 0 18px">CYBER ANIME UNIVERSE — V17</p>
+  <div class="row" style="margin-bottom:14px"><button id="tLogin" class="gchip on" style="flex:1" onclick="authTab('login')">ورود</button><button id="tSignup" class="gchip" style="flex:1" onclick="authTab('signup')">ثبت‌نام</button></div>
+  <input id="aName" class="in" placeholder="اسم نمایشی" style="display:none;margin-bottom:10px"/>
+  <input id="aEmail" class="in" placeholder="ایمیل" style="margin-bottom:10px"/>
+  <input id="aPass" class="in" type="password" placeholder="رمز (حداقل ۶ کاراکتر)" style="margin-bottom:10px"/>
+  <input id="aPass2" class="in" type="password" placeholder="تکرار رمز" style="display:none;margin-bottom:10px"/>
+  <div id="aErr"></div>
+  <button class="btn" id="bAuth" style="width:100%" onclick="doAuth()">ورود به رونین</button>
+  <p style="text-align:center;margin-top:10px"><a href="#" onclick="forgot();return false" class="mut" style="font-size:11.5px;text-decoration:underline">رمزت رو یادت رفت؟ بازیابی رمز</a></p>
+  <p class="mut" style="text-align:center;font-size:11px;margin-top:8px">🔐 مقام و پرمیوم فقط توسط فرمانده سایت داده می‌شه</p>
+ </div>
+</section>
+
+<div id="app" class="hidden">
+ <header id="top">
+  <div class="logo">RONIN</div>
+  <input id="srch" placeholder="🔍 جستجو…" oninput="doSearch(this.value)"/>
+  <button class="icobtn" onclick="openNotifs()">🔔<span id="bellDot" class="hidden">0</span></button>
+  <div id="avTop" onclick="show('me')">؟</div>
+ </header>
+ <div id="shell">
+  <aside id="side" class="g">
+   <div class="logo slogo">RONIN.OS</div>
+   <button class="snav on" data-v="home" onclick="show('home')">🏠 خانه</button>
+   <button class="snav" data-v="anime" onclick="show('anime')">🎬 انیمه</button>
+   <button class="snav" data-v="news" onclick="show('news')">📰 اخبار</button>
+   <button class="snav" data-v="shop" onclick="show('shop')">🛒 مارکت</button>
+   <button class="snav" data-v="community" onclick="show('community')">👥 جامعه<span class="bdg hidden" id="cDot">0</span></button>
+   <button class="snav" data-v="chat" onclick="show('chat')">💬 چت عمومی</button>
+   <div class="ssep"></div>
+   <button class="snav hidden" data-v="staff" id="nStaff" onclick="show('staff')">🔐 شبکه فرماندهی</button>
+   <button class="snav hidden" data-v="admin" id="nAdmin" onclick="show('admin')">🛠️ رونین کور</button>
+   <button class="snav" data-v="ads" onclick="show('ads')">📢 تبلیغات</button>
+   <button class="snav" data-v="premium" onclick="show('premium')">👑 الرون</button>
+   <button class="snav" data-v="me" onclick="show('me')">⚙ شناسنامه من</button>
+   <div class="ssep"></div>
+   <div style="padding:10px;font-size:11.5px;color:var(--mut)" id="sideStatus">…</div>
+   <button class="mini" style="margin-top:auto" onclick="out()">🚪 خروج</button>
+  </aside>
+  <main id="main">
+   <section id="v-home" class="view">
+    <div class="hero">
+     <div class="hgrid"></div><div class="hbeam" style="right:10%"></div><div class="hbeam" style="right:60%;animation-delay:3s"></div>
+     <svg class="hcity2" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <g fill="#0b0e26"><path d="M60 200V110h26v-12h14v12h26v90zM240 200V80l34-44 34 44v120zM1010 200v-80h24v-12h14v12h24v80z"/></g>
+      <g fill="#141a40"><path d="M420 200V60l50-58 50 58v140zM820 200v-90h28v-14h18v14h28v90z"/></g>
+      <g fill="#22d3ee" opacity=".8"><rect x="438" y="80" width="7" height="7"/><rect x="470" y="110" width="7" height="7"/><rect x="838" y="130" width="7" height="7"/></g>
+      <g fill="#e879f9" opacity=".8"><rect x="452" y="140" width="7" height="7"/><rect x="852" y="160" width="7" height="7"/></g>
+     </svg>
+     <div class="fchip" style="top:14%;right:5%">⚡ شبکه انیمه آنلاینه</div>
+     <div class="fchip" style="bottom:22%;right:8%;animation-delay:2s">💎 کالکشن سایبری</div>
+     <div class="hpanel">
+      <h1>RONIN STORE</h1>
+      <p>دنیای انیمه زنده‌ست. جامعه، مارکت، اخبار و چت — همه در یک شهر سایبری.</p>
+      <div class="row"><button class="btn" onclick="show('anime')">🎬 وارد دنیا شو</button><button class="btn ghost" onclick="show('community')">👥 جامعه</button></div>
+      <div class="row" style="margin-top:14px;gap:6px"><span class="bdg">🛒 <b id="stShop">0</b></span><span class="bdg">👥 <b id="stUsers">0</b></span><span class="bdg grn">🟢 <b id="stOnline">1</b></span></div>
+     </div>
+    </div>
+    <div class="wrap"><div class="bento">
+     <button class="tile t1" onclick="show('anime')"><span class="ticon">🎬</span><h4>انیمه</h4><p>ترند و کلاسیک‌ها</p><span class="bdg cyan">مشاهده ←</span></button>
+     <button class="tile t2" onclick="show('news')"><span class="ticon">📰</span><h4>اخبار</h4><p>شبکه خبر رونین</p><span class="bdg cyan">مشاهده ←</span></button>
+     <button class="tile t2" onclick="show('shop')"><span class="ticon">🛒</span><h4>مارکت</h4><p>تبلیغ کالاها</p><span class="bdg cyan">مشاهده ←</span></button>
+     <button class="tile t3" onclick="show('community')"><span class="ticon">👥</span><h4>جامعه</h4><p>پست، لایک، فالو</p><span class="bdg cyan">مشاهده ←</span></button>
+     <button class="tile t1" onclick="show('chat')"><span class="ticon">💬</span><h4>چت عمومی</h4><p>ترمینال گفتگو</p><span class="bdg cyan">مشاهده ←</span></button>
+     <button class="tile t4" onclick="show('premium')"><span class="ticon">👑</span><h4>الرون</h4><p>باشگاه پرمیوم</p><span class="bdg gold">ارتقا ←</span></button>
+    </div></div>
+   </section>
+   <section id="v-anime" class="view hidden"><div class="wrap">
+    <div class="hsec">🔥 ویژه این هفته</div><div id="feat"></div>
+    <div class="hsec sec2">📈 ترندها</div><div class="hscroll" id="trend"></div>
+    <div class="hsec sec2">🧭 ژانرها</div><div class="row" id="genres" style="margin-bottom:14px"></div>
+    <div class="gridp" id="animeGrid"></div>
+   </div></section>
+   <section id="v-news" class="view hidden"><div class="wrap"><div class="hsec">📰 شبکه خبر رونین</div><div id="newsGrid"></div></div></section>
+   <section id="v-shop" class="view hidden"><div class="wrap"><div class="hsec">🛒 رونین مارکت <span class="bdg" id="shopCount">0</span></div><div class="gridp" id="shopGrid"></div></div></section>
+   <section id="v-ads" class="view hidden"><div class="wrap">
+    <div class="hsec">📢 تبلیغ کالا</div>
+    <div class="g" style="padding:16px;margin-bottom:16px">
+     <input id="adT" class="in" placeholder="عنوان آگهی" style="margin-bottom:9px"/>
+     <input id="adD" class="in" placeholder="توضیح جنس" style="margin-bottom:9px"/>
+     <input id="adC" class="in" placeholder="راه ارتباطی (تلگرام/شماره)" style="margin-bottom:9px"/>
+     <div class="row"><input id="adP" class="in" placeholder="قیمت (تومان)" style="flex:1"/><button class="btn" onclick="submitAd()">ارسال برای تایید</button></div>
+    </div>
+    <div class="hsec sec2">🔥 تاییدشده‌ها</div><div id="adsWall"></div>
+    <div class="hsec sec2">⏳ در انتظار من</div><div id="myAds"></div>
+   </div></section>
+   <section id="v-community" class="view hidden"><div class="wrap">
+    <div class="hsec">👥 جامعه رونین‌ها</div>
+    <div class="g" style="padding:16px;margin-bottom:16px">
+     <textarea id="postT" class="in" rows="3" placeholder="چه خبر رونین؟ پستت رو بنویس…"></textarea>
+     <div class="row" style="margin-top:10px;justify-content:space-between"><span class="mut" style="font-size:11px" id="postHint"></span><button class="btn sm" onclick="createPost()">📢 انتشار</button></div>
+    </div>
+    <div id="feed"></div>
+   </div></section>
+   <section id="v-chat" class="view hidden"><div class="wrap">
+    <div class="hsec">💬 چت عمومی <span class="bdg grn">🟢 <b id="onChat">0</b> آنلاین</span></div>
+    <div class="chatbox" id="gBox"></div>
+    <div class="mut" id="gTyping" style="height:18px;font-size:11.5px;padding:3px 4px"></div>
+    <div class="row"><input id="gIn" class="in" style="flex:1" placeholder="پیامت رو بفرست…" oninput="typing()" onkeydown="if(event.key==='Enter')send('global')"/><button class="btn" onclick="send('global')">ارسال</button></div>
+   </div></section>
+   <section id="v-staff" class="view hidden"><div class="wrap">
+    <div class="hsec">🔐 شبکه فرماندهی (مخفی)</div>
+    <div class="chatbox" id="sBox"></div>
+    <div class="row"><input id="sIn" class="in" style="flex:1" placeholder="پیام تیمی…" onkeydown="if(event.key==='Enter')send('staff')"/><button class="btn" onclick="send('staff')">ارسال</button></div>
+   </div></section>
+   <section id="v-premium" class="view hidden"><div class="wrap">
+    <div class="g" style="padding:26px;text-align:center;background:linear-gradient(160deg,#42200688,#0a0d22ee)">
+     <div style="font-size:44px">👑</div><h2 style="margin:8px 0">RONIN ELITE</h2>
+     <p class="mut" style="font-size:13px;max-width:420px;margin:0 auto 18px">نشان طلایی 💎 • رنگ‌های ویژه کاراکتر راهنما 🥷 • حباب چت طلایی • آگهی نامحدود • پشتیبانی ویژه</p>
+     <div style="font-size:30px;font-weight:900;color:var(--gold)">۹۹٬۰۰۰ <span style="font-size:14px">تومان / ماه</span></div>
+     <button class="btn gold" style="margin-top:16px" onclick="buyPremium()">💎 ارتقا به الرون</button>
+    </div>
+   </div></section>
+   <section id="v-me" class="view hidden"><div class="wrap">
+    <div class="g" style="padding:22px">
+     <div class="row" style="gap:14px;margin-bottom:14px">
+      <div class="avatar" id="meAv" style="width:64px;height:64px;font-size:26px;border-radius:16px">؟</div>
+      <div><div style="font-weight:900;font-size:17px" id="meNameV">…</div><div class="row" style="margin-top:5px"><span class="bdg" id="meRole"></span><span id="mePrem"></span></div></div>
+     </div>
+     <div class="mut" id="meEmail" style="font-size:12.5px"></div>
+     <div class="row" style="margin-top:10px;gap:6px"><span class="bdg">❤️ <b id="meLikes">0</b></span><span class="bdg">✍️ <b id="mePosts">0</b></span><span class="bdg">فالوور <b id="meFol">0</b></span><span class="bdg">دنبال‌شده <b id="meFoling">0</b></span></div>
+     <div style="margin-top:16px"><div class="mut" style="font-size:12px;margin-bottom:6px">بیوگرافی:</div><div class="row"><input id="meBio" class="in" style="flex:1" placeholder="درباره خودت…"/><button class="btn sm" onclick="saveBio()">ذخیره</button></div></div>
+     <div style="margin-top:16px"><div class="mut" style="font-size:12px;margin-bottom:6px">نام نمایشی:</div><div class="row"><input id="meName" class="in" style="flex:1"/><button class="btn sm" onclick="saveName()">ذخیره اسم</button></div></div>
+     <div class="sec2"><div class="hsec" style="font-size:14px">🥷 کاراکتر راهنما</div>
+      <div class="row" id="cColors"></div>
+      <p class="mut" style="font-size:11px;margin-top:8px">روی کاراکتر پایین صفحه کلیک کن تا سلام کنه 👋</p>
+     </div>
+    </div>
+   </div></section>
+   <section id="v-admin" class="view hidden"><div class="wrap">
+    <div class="hsec">🛠️ رونین کور — اتاق فرماندهی <span class="bdg cyan">LIVE</span></div>
+    <div class="bento" id="statTiles" style="grid-template-columns:repeat(auto-fit,minmax(100px,1fr))"></div>
+    <div class="g" style="padding:16px;margin-top:16px"><div class="hsec" style="font-size:14px">📊 عضویت ۷ روز اخیر</div><div class="chart" id="chart"></div></div>
+    <div class="hsec sec2">📟 تایم‌لاین</div><div class="tl" id="timeline"></div>
+    <div class="hsec sec2">📝 پست‌های در انتظار تایید</div><div id="pendBox"></div>
+    <div class="hsec sec2">💳 سفارش‌ها</div><div id="paysBox"></div>
+    <div class="hsec sec2">📣 تایید آگهی</div><div id="adAdminBox"></div>
+    <div class="hsec sec2">👥 کاربران و کنترل</div><div id="usersBox"></div>
+    <div class="hsec sec2">🛒 محصولات مارکت</div>
+    <div class="g" style="padding:16px;margin-bottom:10px">
+     <input id="pN" class="in" placeholder="اسم محصول" style="margin-bottom:9px"/>
+     <div class="row" style="margin-bottom:9px"><input id="pP" class="in" placeholder="قیمت" style="flex:1"/><input id="pI" class="in" placeholder="ایموجی 🎁" style="flex:1"/></div>
+     <div class="row"><input id="pD" class="in" placeholder="توضیح" style="flex:1"/><button class="btn sm" onclick="addProduct()">+ افزودن</button></div>
+    </div>
+    <div id="prodAdmin"></div>
+    <div class="hsec sec2">📢 اعلان‌های سیستم</div>
+    <div class="g" style="padding:16px"><div class="row"><input id="nT" class="in" placeholder="متن اعلان…" style="flex:1"/><button class="btn sm" onclick="postNews()">انتشار</button></div></div>
+    <div id="newsAdmin" style="margin-top:10px"></div>
+   </div></section>
+  </main>
+ </div>
+ <button class="fab" onclick="show('chat')">💬</button>
+ <nav id="botnav">
+  <button class="on" data-v="home" onclick="show('home')"><span style="font-size:19px">🏠</span>خانه</button>
+  <button data-v="anime" onclick="show('anime')"><span style="font-size:19px">🎬</span>انیمه</button>
+  <button data-v="community" onclick="show('community')"><span style="font-size:19px">👥</span>جامعه</button>
+  <button data-v="chat" onclick="show('chat')"><span style="font-size:19px">💬</span>چت<span class="dot hidden" id="cDot2">0</span></button>
+  <button data-v="me" onclick="show('me')"><span style="font-size:19px">👤</span>حساب</button>
+ </nav>
+</div>
+
+<div id="npc">
+ <div class="bub" id="npcBub">YO! رونین!</div>
+ <svg viewBox="0 0 90 110" width="100%">
+  <ellipse cx="45" cy="104" rx="26" ry="5" fill="#000" opacity=".45"/>
+  <path d="M28 62h34l6 34q1 6-5 6H27q-6 0-5-6z" fill="#f97316"/>
+  <path d="M30 66h30l1 6H29z" fill="#ea580c"/>
+  <circle cx="45" cy="40" r="22" fill="#ffd9b3"/>
+  <path d="M23 38q22-16 44 0l-2-12q-20-12-40 0z" fill="#1e293b"/>
+  <rect x="21" y="34" width="48" height="9" rx="4" fill="#f97316"/>
+  <rect x="60" y="33" width="14" height="7" rx="3" fill="#f97316"/>
+  <rect x="19" y="35" width="10" height="6" rx="3" fill="#1e293b" opacity=".85"/>
+  <circle cx="37" cy="46" r="3.2" fill="#0f172a"/><circle cx="53" cy="46" r="3.2" fill="#0f172a"/>
+  <circle cx="38.2" cy="45" r="1" fill="#fff"/><circle cx="54.2" cy="45" r="1" fill="#fff"/>
+  <path d="M40 56q5 4 10 0" stroke="#b45309" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M27 66l-7 22 8 3 7-20z" fill="#f97316"/><path d="M63 66l7 22-8 3-7-20z" fill="#f97316"/>
+ </svg>
+ <button id="npcBtn" title="راهنما" onclick="npcWave()"></button>
+</div>
+
+<script>
+const cfg={apiKey:"AIzaSyCoGypb6NCmmHr2sK4FLreF4He48QPcLL8",authDomain:"ronin-store-3d738.firebaseapp.com",databaseURL:"https://ronin-store-3d738-default-rtdb.firebaseio.com",projectId:"ronin-store-3d738",storageBucket:"ronin-store-3d738.firebasestorage.app",messagingSenderId:"7231014477",appId:"1:7231014477:web:1607de8a1f602d4ff9be04"};
+firebase.initializeApp(cfg);
+const db=firebase.database(),auth=firebase.auth();
+let ME=null,UREC=null,started=false,staffOn=false,USERS={},ONLINE={},FOLLOWING={},POSTS={},NOTIFS={},unreadN=0,unreadC=0,seenC=Date.now(),Q="",CURV="home",_prods={},_ads={},_pays={},OWNERUID=null,lastSend=0;
+const $=i=>document.getElementById(i);
+const setT=(i,v)=>{const e=$(i);if(e)e.textContent=v};
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ft=t=>new Date(t||Date.now()).toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit"});
+const fd=t=>new Date(t||Date.now()).toLocaleDateString("fa-IR",{month:"short",day:"numeric"});
+const hue=n=>{let h=0;for(const c of String(n))h=(h*31+c.charCodeAt(0))%360;return h};
+const avat=(n,sz)=>'<div class="avatar" style="'+(sz||"")+'background:linear-gradient(135deg,hsl('+hue(n)+',70%,55%),hsl('+((hue(n)+60)%360)+',70%,45%))">'+esc((n||"؟")[0])+"</div>";
+const ROLEFA={owner:"👑 فرمانده",manager:"🛡️ مدیر",employee:"🧑‍💻 کارمند",user:"👤 رونین"};
+function toast(m,bad){const t=$("toast");t.textContent=m;t.className="show"+(bad?" bad":"");clearTimeout(t._t);t._t=setTimeout(()=>t.className="",3500)}
+function btn(t,c,fn){const b=document.createElement("button");b.className=c;b.textContent=t;b.onclick=fn;return b}
+const ERRS={"auth/invalid-email":"ایمیل اشتباهه","auth/missing-password":"رمز رو بنویس","auth/weak-password":"رمز حداقل ۶ کاراکتر باشه","auth/email-already-in-use":"این ایمیل قبلاً ثبت شده — وارد شو","auth/invalid-credential":"ایمیل یا رمز اشتباهه","auth/invalid-login-credentials":"ایمیل یا رمز اشتباهه","auth/wrong-password":"رمز اشتباهه","auth/user-not-found":"این ایمیل ثبت نشده — ثبت‌نام کن","auth/too-many-requests":"چند بار تلاش کردی — یه کم صبر کن","auth/network-request-failed":"اینترنت قطع/کند — دوباره امتحان کن","auth/operation-not-allowed":"❗ ثبت‌نام با ایمیل خاموشه: کنسول Firebase ← Authentication ← Sign-in method ← Email/Password ← Enable","auth/configuration-not-found":"❗ کنسول Firebase ← Authentication ← Get started ← Email/Password رو Enable کن","auth/admin-restricted-operation":"❗ کنسول Firebase ← Authentication ← Email/Password رو Enable کن"};
+function ferr(e){const m=ERRS[e&&e.code]||("خطا: "+((e&&e.code)||"نامشخص"));$("aErr").textContent=m;toast(m,1);const b=$("bAuth");if(b)b.disabled=false}
+function authTab(m){const s=m==="signup";$("tLogin").className="gchip"+(s?"":" on");$("tSignup").className="gchip"+(s?" on":"");$("aName").style.display=s?"":"none";$("aPass2").style.display=s?"":"none";$("aErr").textContent="";$("bAuth").textContent=s?"ساخت حساب رونین 🌸":"ورود به رونین";$("bAuth").dataset.m=m}
+function forgot(){const em=prompt("ایمیل حسابت رو بنویس تا لینک بازیابی رمز برات ارسال شه:");if(!em)return;
+ auth.sendPasswordResetEmail(em.trim()).then(()=>toast("📧 لینک بازیابی رفت — پوشه Spam رو هم چک کن")).catch(e=>ferr(e))}
+function doAuth(){
+ const em=$("aEmail").value.trim(),pw=$("aPass").value,nm=$("aName").value.trim(),pw2=$("aPass2").value,up=$("bAuth").dataset.m==="signup";
+ $("aErr").textContent="";
+ if(!em)return toast("ایمیل رو بنویس",1);
+ if(!pw)return toast("رمز رو بنویس",1);
+ if(up){
+  if(!nm)return toast("اسمت رو بنویس",1);
+  if(pw.length<6)return toast("رمز حداقل ۶ کاراکتر باشه",1);
+  if(pw!==pw2)return toast("رمز و تکرارش یکسان نیستن",1);
+ }
+ const b=$("bAuth");b.disabled=true;b.textContent="یه لحظه…";
+ const done=()=>{b.disabled=false;b.textContent=up?"ساخت حساب رونین 🌸":"ورود به رونین"};
+ if(up){
+  auth.createUserWithEmailAndPassword(em,pw).then(c=>{done();makeUser(c.user,nm)}).catch(e=>{
+   if(e.code==="auth/email-already-in-use"){toast("این ایمیل قبلاً ثبت شده — داریم واردت می‌کنیم");return auth.signInWithEmailAndPassword(em,pw).then(done).catch(ferr)}
+   ferr(e);done();
+  });
+ }else{
+  auth.signInWithEmailAndPassword(em,pw).then(done).catch(e=>{
+   if(e.code==="auth/user-not-found"){done();if(confirm("این ایمیل ثبت نشده. حساب جدید ساخته بشه؟")){auth.createUserWithEmailAndPassword(em,pw).then(c=>makeUser(c.user,nm||"سامورایی")).catch(ferr)}}
+   else{ferr(e);done()}
+  });
+ }
+}
+function makeUser(u,nm){const r=db.ref("users/"+u.uid);r.once("value").then(s=>{if(s.exists()){toast("خوش برگشتی! 🌸");return}
+ db.ref("meta/ownerClaimed").transaction(c=>c===null?u.uid:undefined).then(res=>{
+  r.set({name:nm||"سامورایی",email:u.email,role:"user",premium:false,joined:Date.now()}).then(()=>{
+   if(res.committed){r.child("role").set("owner").then(()=>{seed();toast("👑 حساب فرمانده ساخته شد!")})}else toast("خوش اومدی رونین! 🌸")}).catch(e=>toast("خطای دیتابیس: "+(e.code||""),1))})}).catch(()=>{})}
+auth.onAuthStateChanged(u=>{if(!u){ME=null;$("app").classList.add("hidden");$("authScreen").classList.remove("hidden");return}
+ ME=u;seenC=Date.now();$("authScreen").classList.add("hidden");$("app").classList.remove("hidden");
+ db.ref("users/"+u.uid).on("value",s=>{UREC=s.val()||{};renderMe();applyRole()},()=>{UREC={}});
+ if(!started){started=true;startAll();presence();npcInit()}});
+function isStaff(){return UREC&&["owner","manager","employee"].includes(UREC.role)}
+function applyRole(){const staff=isStaff();
+ $("nStaff").classList.toggle("hidden",!staff);$("nAdmin").classList.toggle("hidden",!UREC||UREC.role!=="owner");
+ setT("sideStatus",ROLEFA[(UREC&&UREC.role)||"user"]+(UREC&&UREC.premium?" • 💎":""));
+ $("postHint").textContent=UREC&&UREC.role==="owner"?"پستت مستقیم منتشر می‌شه":isStaff()?"پستت بعد از تایید فرمانده منتشر می‌شه ⏳":"پستت مستقیم منتشر می‌شه";
+ if(staff&&!staffOn){staffOn=true;chatOn("staff")}}
+function presence(){const pr=db.ref("chat/global/presence/"+ME.uid);
+ const up=()=>pr.set({n:(UREC&&UREC.name)||"رونین",t:Date.now()});up();setInterval(up,30000);pr.onDisconnect().remove();
+ db.ref("chat/global/presence").on("value",s=>{const v=s.val()||{},now=Date.now();ONLINE={};
+  Object.keys(v).forEach(k=>{if(now-(v[k].t||0)<70000)ONLINE[k]=v[k]});renderOnline()},()=>{})}
+function renderOnline(){const ks=Object.keys(ONLINE);setT("stOnline",Math.max(ks.length,1));setT("onCount",ks.length);setT("onChat",ks.length);
+ const l=$("onlineList");if(l){l.innerHTML=ks.length?"":"<div class='empty'>فقط خودت اینجایی 🌸</div>";
+ ks.forEach(k=>{const o=ONLINE[k],d=document.createElement("div");d.className="feed";
+  d.innerHTML=avat(o.n)+'<div style="flex:1"><b style="font-size:13.5px">'+esc(o.n)+'</b><div class="mut" style="font-size:11px">🟢 آنلاین</div></div>';l.appendChild(d)}}}
+function startAll(){
+ db.ref("meta/ownerClaimed").once("value").then(s=>{OWNERUID=s.val()}).catch(()=>{});
+ db.ref("news").limitToLast(15).on("value",s=>renderNews(s.val()||{}),()=>{});
+ db.ref("products").on("value",s=>renderShop(s.val()||{}),()=>{});
+ db.ref("ads").on("value",s=>renderAds(s.val()||{}),()=>{});
+ db.ref("users").on("value",s=>{USERS=s.val()||{};renderUsers()},()=>{});
+ db.ref("posts").on("value",s=>{POSTS=s.val()||{};renderFeed();renderPend();renderMeStats()},()=>{});
+ db.ref("follows/"+ME.uid).on("value",s=>{FOLLOWING=s.val()||{};renderFeed()},()=>{});
+ db.ref("notifs/"+ME.uid).limitToLast(40).on("value",s=>{NOTIFS=s.val()||{};unreadN=0;
+  Object.keys(NOTIFS).forEach(k=>{if(!NOTIFS[k].read)unreadN++});pingBell()},()=>{});
+ db.ref("payments").on("value",s=>renderPays(s.val()||{}),()=>{});
+ chatOn("global");buildStatic()}
+function notify(uid,txt){if(!uid||uid===ME.uid)return;db.ref("notifs/"+uid).push({txt:txt,t:Date.now(),read:false}).catch(()=>{})}
+function pingBell(){["bellDot","cDot","cDot2"].forEach(i=>{const e=$(i);if(!e)return;
+ const n=i==="bellDot"?unreadN:unreadC;e.classList.toggle("hidden",!n);if(n)e.textContent=n>9?"9+":n})}
+function openNotifs(){$("notifPanel").classList.remove("hidden");const l=$("notifList");l.innerHTML="";
+ const ks=Object.keys(NOTIFS).sort((a,b)=>(NOTIFS[b].t||0)-(NOTIFS[a].t||0));
+ if(!ks.length)l.innerHTML="<div class='empty'>سیگنالی نداری 🔔</div>";
+ ks.forEach(k=>{const n=NOTIFS[k],d=document.createElement("div");d.className="feed";d.style.padding="9px";
+  d.innerHTML='<div style="flex:1;font-size:12.5px">'+esc(n.txt)+'</div><span class="mut" style="font-size:10px">'+ft(n.t)+"</span>";
+  if(!n.read)d.style.borderColor="#22d3ee88";l.appendChild(d)});
+ Object.keys(NOTIFS).forEach(k=>{if(!NOTIFS[k].read)db.ref("notifs/"+ME.uid+"/"+k+"/read").set(true).catch(()=>{})})}
+function closeNotifs(){$("notifPanel").classList.add("hidden")}
+function renderFeed(){const f=$("feed");if(!f)return;f.innerHTML="";
+ const ks=Object.keys(POSTS).sort((a,b)=>(POSTS[b].t||0)-(POSTS[a].t||0));
+ let shown=0;
+ ks.forEach(pid=>{const p=POSTS[pid],u=USERS[p.uid]||{};
+  const hidden=p.status!=="approved"&&p.uid!==ME.uid&&!isStaff();
+  if(hidden)return;shown++;
+  const likes=p.likes?Object.keys(p.likes).length:0,nc=p.commentCount||0;
+  const d=document.createElement("div");d.className="feed";
+  let h=avat(p.name)+'<div style="flex:1;min-width:0"><div class="row" style="gap:6px"><b style="font-size:13.5px">'+esc(p.name||"?")+"</b>"+(u.role&&u.role!=="user"?'<span class="bdg cyan" style="font-size:9.5px">'+ROLEFA[u.role]+"</span>":"")+(u.premium?'<span class="bdg gold" style="font-size:9.5px">💎</span>':"")+(p.status==="pending"?'<span class="bdg red" style="font-size:9.5px">⏳ در انتظار تایید</span>':"")+'</div><div class="mut" style="font-size:10.5px;margin-bottom:5px">'+ft(p.t)+'</div><div style="font-size:13.5px;word-break:break-word">'+esc(p.text)+"</div>";
+  h+='<div class="row" style="margin-top:9px;gap:6px"><button class="lk'+(p.likes&&p.likes[ME.uid]?" on":"")+'" data-lk="'+pid+'">❤️ '+likes+'</button><button class="lk" data-cm="'+pid+'">💬 '+nc+"</button>";
+  if(p.uid!==ME.uid){h+='<button class="lk" data-fw="'+p.uid+'">'+(FOLLOWING[p.uid]?"✅ دنبال می‌کنی":"➕ فالو")+"</button>"}
+  if(p.uid===ME.uid||(UREC&&UREC.role==="owner")){h+='<button class="lk" data-del="'+pid+'">🗑</button>'}
+  h+="</div"+'><div class="cmts hidden" id="cm_'+pid+'" style="margin-top:8px"></div></div>';
+  d.innerHTML=h;f.appendChild(d);
+  d.querySelector("[data-lk]").onclick=()=>likePost(pid,p);
+  d.querySelector("[data-cm]").onclick=()=>toggleComments(pid);
+  const fw=d.querySelector("[data-fw]");if(fw)fw.onclick=()=>followU(p.uid,p.name);
+  const del=d.querySelector("[data-del]");if(del)del.onclick=()=>{if(confirm("پست حذف بشه؟"))db.ref("posts/"+pid).remove().catch(()=>toast("اجازه نداری",1))};
+ });
+ if(!shown)f.innerHTML="<div class='empty'>هنوز پستی نیست — اولین پست رو تو بذار! ✍️</div>";
+ unreadC=0;pingBell()}
+function createPost(){const t=$("postT").value.trim();if(!t)return toast("متن پست رو بنویس",1);
+ if(t.length>800)return toast("پست خیلی طولانیه (حداکثر ۸۰۰)",1);
+ const pend=isStaff()&&UREC.role!=="owner";
+ db.ref("posts").push({uid:ME.uid,name:(UREC&&UREC.name)||"کاربر",text:t,t:Date.now(),status:pend?"pending":"approved",commentCount:0}).then(()=>{
+  $("postT").value="";toast(pend?"⏳ پستت برای تایید فرمانده رفت":"✅ پست منتشر شد");
+  if(pend&&OWNERUID)notify(OWNERUID,"📝 پست جدید از "+(UREC.name||"")+" در انتظار تاییده")}).catch(e=>toast("خطا: "+(e.code||""),1))}
+function likePost(pid,p){const lr=db.ref("posts/"+pid+"/likes/"+ME.uid);
+ lr.transaction(function(cur){return cur?null:true}).then(function(res){
+  if(res.committed){notify(p.uid,"❤️ "+(UREC.name||"کسی")+" پستت رو لایک کرد");npcSay("لایک شد! ❤️")}}).catch(()=>toast("اجازه نداری",1))}
+function toggleComments(pid){const box=$("cm_"+pid);if(!box)return;
+ if(!box.classList.contains("hidden")){box.classList.add("hidden");return}
+ box.classList.remove("hidden");box.innerHTML="<div class='empty'>…</div>";
+ db.ref("comments").orderByChild("pid").equalTo(pid).limitToLast(30).on("value",s=>{
+  const cs=s.val()||{};box.innerHTML="";
+  const ks=Object.keys(cs).sort((a,b)=>(cs[a].t||0)-(cs[b].t||0));
+  ks.forEach(cid=>{const c=cs[cid],d=document.createElement("div");d.className="cmt";
+   d.innerHTML="<b>"+esc(c.name||"?")+"</b>: "+esc(c.text);box.appendChild(d)});
+  if(!ks.length)box.innerHTML="<div class='empty' style='padding:4px'>اولین کامنت رو بذار 💬</div>";
+  const r=document.createElement("div");r.className="row";r.style.marginTop="7px";
+  const inp=document.createElement("input");inp.className="cmtin";inp.placeholder="کامنت…";
+  const sb=btn("ارسال","btn sm",()=>{const t=inp.value.trim();if(!t)return;
+   db.ref("comments").push({pid:pid,uid:ME.uid,name:(UREC&&UREC.name)||"کاربر",text:t.slice(0,300),t:Date.now()}).then(()=>{
+    db.ref("posts/"+pid+"/commentCount").transaction(v=>(v||0)+1);
+    notify(POSTS[pid]&&POSTS[pid].uid,"💬 "+(UREC.name||"کسی")+" کامنت گذاشت");inp.value=""}).catch(()=>toast("اجازه نداری",1))});
+  r.appendChild(inp);r.appendChild(sb);box.appendChild(r)});
+ const lb=document.querySelector('[data-cm="'+pid+'"]');
+ if(lb&&!lb._n){lb._n=1;db.ref("comments").orderByChild("pid").equalTo(pid).on("value",s2=>{const kk=Object.keys(s2.val()||{}).length;lb.textContent="💬 "+kk})}}
+function followU(uid,name){const fr=db.ref("follows/"+ME.uid+"/"+uid);
+ if(FOLLOWING[uid]){fr.remove().then(()=>toast("دنبال کردن لغو شد")).catch(()=>{})}
+ else{fr.set(true).then(()=>{notify(uid,"👥 "+(UREC.name||"کسی")+" تو رو دنبال کرد");toast("✅ "+(name||"")+" رو دنبال کردی");npcSay("فالو شد!")}).catch(()=>toast("اجازه نداری",1))}}
+function renderPend(){const b=$("pendBox");if(!b||!UREC||UREC.role!=="owner")return;b.innerHTML="";
+ const ks=Object.keys(POSTS).filter(k=>POSTS[k].status==="pending");
+ if(!ks.length){b.innerHTML="<div class='empty'>پست در انتظاری نیست ✅</div>";return}
+ ks.forEach(pid=>{const p=POSTS[pid],d=document.createElement("div");d.className="urow";
+  d.innerHTML='<div style="flex:1;min-width:150px"><b>'+esc(p.name||"?")+'</b><div style="font-size:12.5px">'+esc(p.text)+'</div><div class="mut" style="font-size:10.5px">'+ft(p.t)+"</div></div>";
+  const r=document.createElement("div");r.className="row";
+  r.appendChild(btn("✅","mini",()=>db.ref("posts/"+pid+"/status").set("approved").then(()=>{notify(p.uid,"✅ پستت تایید و منتشر شد");toast("تایید شد")})));
+  r.appendChild(btn("❌","mini",()=>db.ref("posts/"+pid+"/status").set("rejected").then(()=>notify(p.uid,"❌ پستت رد شد"))));
+  d.appendChild(r);b.appendChild(d)})}
+function renderShop(ps){_prods=ps;const g=$("shopGrid");if(!g)return;const ks=Object.keys(ps).filter(k=>!Q||(ps[k].name||"").includes(Q));g.innerHTML="";
+ if(!ks.length)g.innerHTML="<div class='empty'>هنوز محصولی نیست — از رونین کور اضافه کن 🛠️</div>";
+ ks.forEach(k=>{const p=ps[k],c=document.createElement("div");c.className="pcard";
+  c.innerHTML='<div class="pposter '+((k.charCodeAt(0)%2)?"t1":"t2")+'">'+esc(p.icon||"🎁")+(p.badge?'<span class="bdg gold" style="position:absolute;top:8px;right:8px">'+esc(p.badge)+"</span>":"")+'</div><div class="pinfo"><b style="font-size:13.5px">'+esc(p.name)+'</b><div class="mut" style="font-size:11px;margin:3px 0 6px">'+esc(p.desc||"")+'</div><div class="row" style="justify-content:space-between"><span class="price">'+esc(p.price)+" تومان</span>"+'<span class="rate">⭐ '+(p.rating||"۸.۵")+'</span></div><div class="row" style="justify-content:space-between;margin-top:6px"><span class="mut" style="font-size:10.5px">فروشنده: '+esc(p.by||"رونین")+'</span><span class="stk">🟢 موجود</span></div><button class="btn sm" style="width:100%;margin-top:10px">🛒 سفارش سریع</button></div>';
+  c.querySelector(".btn").onclick=()=>buy(k,p);g.appendChild(c)});
+ setT("stShop",Object.keys(ps).length);setT("shopCount",Object.keys(ps).length);
+ const pa=$("prodAdmin");if(pa){pa.innerHTML="";Object.keys(ps).forEach(k=>{const p=ps[k],r=document.createElement("div");r.className="urow";
+  r.innerHTML='<div style="flex:1"><b>'+esc(p.icon||"🎁")+" "+esc(p.name)+'</b><div class="mut" style="font-size:11px">'+esc(p.price)+" تومان</div></div>";
+  r.appendChild(btn("🗑","mini",()=>db.ref("products/"+k).remove()));pa.appendChild(r)})}}
+function buy(k,p){if(!confirm("سفارش «"+p.name+"» به قیمت "+p.price+" تومان ثبت بشه؟"))return;
+ db.ref("payments").push({uid:ME.uid,name:(UREC&&UREC.name)||"کاربر",type:"order",item:p.name,amount:p.price,t:Date.now(),status:"pending"}).then(()=>{toast("✅ سفارش ثبت شد");npcSay("سفارش رفت!");if(OWNERUID)notify(OWNERUID,"🛒 سفارش جدید: "+p.name)}).catch(()=>toast("خطا",1))}
+function renderAds(as){_ads=as;const wall=$("adsWall"),my=$("myAds"),ab=$("adAdminBox");if(!wall)return;wall.innerHTML="";my.innerHTML="";if(ab)ab.innerHTML="";let ap=0;
+ Object.keys(as).forEach(k=>{const a=as[k];
+  if(a.status==="approved"){ap++;const c=document.createElement("div");c.className="feed";
+   c.innerHTML='<div style="flex:1"><b>📢 '+esc(a.title)+'</b><div class="mut" style="font-size:12px">'+esc(a.desc)+'</div><div class="mut" style="font-size:11px;margin-top:4px">📞 '+esc(a.contact)+" • "+esc(a.name||"")+" "+esc(a.price||"")+"</div></div>";wall.appendChild(c)}
+  else{if(a.uid===ME.uid){const c=document.createElement("div");c.className="feed";c.innerHTML='<div style="flex:1"><b>⏳ '+esc(a.title)+'</b><div class="mut" style="font-size:11px">در انتظار تایید</div></div>';my.appendChild(c)}
+   if(ab&&UREC&&isStaff()){const c=document.createElement("div");c.className="urow";
+    c.innerHTML='<div style="flex:1;min-width:150px"><b>'+esc(a.title)+'</b><div class="mut" style="font-size:11.5px">'+esc(a.desc)+'</div><div class="mut" style="font-size:11px">'+esc(a.name||"")+" • "+esc(a.contact)+"</div></div>";
+    const r=document.createElement("div");r.className="row";r.appendChild(btn("✅","mini",()=>db.ref("ads/"+k+"/status").set("approved")));r.appendChild(btn("🗑","mini",()=>db.ref("ads/"+k).remove()));c.appendChild(r);ab.appendChild(c)}}});
+ if(!ap)wall.innerHTML="<div class='empty'>هنوز آگهی تاییدشده‌ای نیست 📢</div>";
+ if(!my.innerHTML)my.innerHTML="<div class='empty'>آگهی در انتظاری نداری</div>"}
+function submitAd(){const t=$("adT").value.trim(),d=$("adD").value.trim(),c=$("adC").value.trim(),p=$("adP").value.trim();
+ if(!t||!d||!c)return toast("فیلدها رو پر کن",1);
+ db.ref("ads").push({uid:ME.uid,name:(UREC&&UREC.name)||"",title:t,desc:d,contact:c,price:p,t:Date.now(),status:"pending"}).then(()=>{$("adT").value=$("adD").value=$("adC").value=$("adP").value="";toast("📢 ثبت شد — بعد از تایید نمایش داده می‌شه");if(OWNERUID)notify(OWNERUID,"📣 آگهی جدید از "+(UREC.name||""))})}
+function renderNews(ns){const ks=Object.keys(ns).reverse();
+ const ng=$("newsGrid");if(ng){ng.innerHTML=ks.length?"":"<div class='empty'>هنوز خبری نیست 📰</div>";
+  ks.forEach(k=>{const n=ns[k],d=document.createElement("div");d.className="feed";d.innerHTML=avat(n.by||"خبر")+'<div style="flex:1"><b>📰 '+esc(n.txt)+'</b><div class="mut" style="font-size:11px">'+esc(n.by||"")+" • "+fd(n.t)+"</div></div>";ng.appendChild(d)})}
+ const na=$("newsAdmin");if(na){na.innerHTML="";ks.forEach(k=>{const n=ns[k],r=document.createElement("div");r.className="urow";r.innerHTML='<div style="flex:1">'+esc(n.txt)+"</div>";r.appendChild(btn("🗑","mini",()=>db.ref("news/"+k).remove()));na.appendChild(r)})}
+ buildTimeline()}
+function postNews(){const t=$("nT").value.trim();if(!t)return toast("متن رو بنویس",1);
+ db.ref("news").push({txt:t,by:(UREC&&UREC.name)||"تیم",t:Date.now()}).then(()=>{$("nT").value="";toast("📢 منتشر شد")})}
+function renderUsers(){renderOnline();const role=UREC&&UREC.role,list=$("usersBox");if(!list)return;list.innerHTML="";const us=Object.keys(USERS);
+ us.forEach(uid=>{const u=USERS[uid],row=document.createElement("div");row.className="urow";
+  let h=avat(u.name)+'<div style="flex:1;min-width:130px"><b>'+esc(u.name||"?")+(u.premium?' <span class="bdg gold">💎</span>':"")+(uid===OWNERUID?' <span class="bdg cyan">👑</span>':"")+'</b><div class="mut" style="font-size:11px">'+esc(u.email||"")+'</div><div class="mut" style="font-size:11px">مقام: '+ROLEFA[u.role||"user"]+(ONLINE[uid]?" • 🟢":"")+"</div></div>";
+  if(role==="owner"&&u.role!=="owner"){h+='<div class="row"><select class="in" onchange="setRole(\''+uid+'\',this.value)"><option value="">مقام…</option><option value="manager">🛡️ مدیر</option><option value="employee">🧑‍💻 کارمند</option><option value="user">👤 کاربر</option></select><button class="mini" onclick="togglePrem(\''+uid+'\','+(u.premium?"false":"true")+')">💎</button><button class="mini" onclick="togglePerms(\''+uid+'\')">🔐 دسترسی‌ها</button></div><div class="row hidden" id="perms_'+uid+'" style="width:100%"></div>'}
+  row.innerHTML=h;list.appendChild(row)});
+ if(!us.length)list.innerHTML="<div class='empty'>کاربری نیست</div>";
+ setT("stUsers",us.length);buildChart()}
+const PERMS=[["posts","✍️ پست"],["ads","📣 آگهی"],["products","🛒 محصول"],["orders","💳 سفارش"],["chat","💬 چت"],["moderation","🛡️ تایید"]];
+function togglePerms(uid){const box=$("perms_"+uid);if(!box)return;box.classList.toggle("hidden");
+ if(box.classList.contains("hidden"))return;box.innerHTML="";
+ const cur=(USERS[uid]&&USERS[uid].perms)||{};
+ PERMS.forEach(p=>{const b=btn(p[1]+(cur[p[0]]?" ✅":" ✖️"),"mini",()=>{db.ref("users/"+uid+"/perms/"+p[0]).set(!cur[p[0]]).then(()=>toast("ذخیره شد"))});box.appendChild(b)})}
+function setRole(uid,r){if(!r)return;db.ref("users/"+uid+"/role").set(r).then(()=>{toast("✅ مقام تغییر کرد");notify(uid,"🎖️ مقام تو به «"+ROLEFA[r]+"» تغییر کرد")}).catch(()=>toast("اجازه نداری",1))}
+function togglePrem(uid,v){db.ref("users/"+uid+"/premium").set(v).then(()=>{toast(v?"💎 فعال شد":"خاموش شد");notify(uid,v?"💎 پرمیومت فعال شد! 🎉":"پرمیومت غیرفعال شد")}).catch(()=>toast("اجازه نداری",1))}
+function renderPays(ps){_pays=ps;const l=$("paysBox");if(!l)return;const ks=Object.keys(ps).reverse();l.innerHTML="";
+ if(!ks.length)l.innerHTML="<div class='empty'>سفارشی نیست 💳</div>";
+ ks.forEach(k=>{const p=ps[k],c=document.createElement("div");c.className="urow";
+  const b=p.type==="premium"?'<span class="bdg gold">💎 پرمیوم</span>':'<span class="bdg cyan">🛒 '+esc(p.item||"سفارش")+"</span>";
+  c.innerHTML=b+'<div style="flex:1;min-width:110px"><b>'+esc(p.name||"")+'</b><div class="mut" style="font-size:11px">'+esc(p.amount||0)+" تومان • "+ft(p.t)+"</div></div>"+(p.status!=="pending"?'<span class="bdg">'+(p.status==="approved"?"✅":"❌")+"</span>":"");
+  if(p.status==="pending"&&UREC&&UREC.role==="owner"){const r=document.createElement("div");r.className="row";
+   r.appendChild(btn("✅","mini",()=>{db.ref("payments/"+k+"/status").set("approved").then(()=>{if(p.type==="premium"&&p.uid){db.ref("users/"+p.uid+"/premium").set(true);notify(p.uid,"💎 پرمیومت فعال شد! 🎉");npcSay("پرمیوم! 🎉")}}).then(()=>toast("تایید شد"))}));r.appendChild(btn("❌","mini",()=>db.ref("payments/"+k+"/status").set("rejected")));c.appendChild(r)}
+  l.appendChild(c)})}
+function addProduct(){const n=$("pN").value.trim(),pr=$("pP").value.trim(),ic=$("pI").value.trim()||"🎁",d=$("pD").value.trim();
+ if(!n||!pr)return toast("اسم و قیمت رو بنویس",1);
+ db.ref("products").push({name:n,price:pr,icon:ic,desc:d,by:(UREC&&UREC.name)||"",t:Date.now()}).then(()=>{$("pN").value=$("pP").value=$("pI").value=$("pD").value="";toast("🛒 اضافه شد")})}
+function buildChart(){const ch=$("chart");if(!ch)return;const now=Date.now(),days=[0,0,0,0,0,0,0];
+ Object.keys(USERS).forEach(k=>{const j=USERS[k].joined||0,d=Math.floor((now-j)/86400000);if(d>=0&&d<7)days[6-d]++});
+ const mx=Math.max.apply(null,days.concat([1]));ch.innerHTML="";
+ days.forEach(v=>{const i=document.createElement("i");i.style.height=Math.round(v/mx*100)+"%";ch.appendChild(i)});
+ const tl=$("timeline");if(tl){const ev=[];
+  Object.keys(USERS).forEach(k=>ev.push({t:USERS[k].joined,tx:"👤 "+(USERS[k].name||"")+" پیوست"}));
+  Object.keys(_prods).forEach(k=>ev.push({t:_prods[k].t,tx:"🛒 "+(_prods[k].name||"")}));
+  Object.keys(POSTS).forEach(k=>ev.push({t:POSTS[k].t,tx:"📝 پست "+(POSTS[k].name||"")}));
+  tl.innerHTML="";ev.sort((a,b)=>(b.t||0)-(a.t||0)).slice(0,7).forEach(e=>{const d=document.createElement("div");d.className="ev";d.textContent=e.tx+" • "+fd(e.t);tl.appendChild(d)});
+  if(!ev.length)tl.innerHTML="<div class='ev'>فعالیتی نیست</div>"}
+ const st=$("statTiles");if(st){let prem=0,lks=0,pends=0;
+  Object.keys(USERS).forEach(k=>{if(USERS[k].premium)prem++});
+  Object.keys(POSTS).forEach(k=>{lks+=POSTS[k].likes?Object.keys(POSTS[k].likes).length:0;if(POSTS[k].status==="pending")pends++});
+  const data=[["👥",Object.keys(USERS).length],["🟢",Object.keys(ONLINE).length],["✍️",Object.keys(POSTS).length],["⏳",pends],["❤️",lks],["🛒",Object.keys(_prods).length],["📣",Object.keys(_ads).length],["💳",Object.keys(_pays).length],["💎",prem]];
+  st.innerHTML=data.map(x=>'<div class="stat"><b>'+x[1]+"</b><span>"+x[0]+"</span></div>").join("")}}
+function renderMeStats(){if(!ME)return;setT("mePosts",Object.keys(POSTS).filter(k=>POSTS[k].uid===ME.uid).length);
+ let l=0;Object.keys(POSTS).forEach(k=>{if(POSTS[k].uid===ME.uid&&POSTS[k].likes)l+=Object.keys(POSTS[k].likes).length});
+ setT("meLikes",l);setT("meFol",USERS[ME.uid]&&USERS[ME.uid].followers?Object.keys(USERS[ME.uid].followers).length:0);
+ setT("meFoling",Object.keys(FOLLOWING).length)}
+function renderMe(){if(!UREC||!ME)return;
+ $("avTop").textContent=(UREC.name||"؟")[0];$("meAv").textContent=(UREC.name||"؟")[0];
+ $("meNameV").textContent=UREC.name||"";$("meName").value=UREC.name||"";
+ $("meBio").value=UREC.bio||"";$("meEmail").textContent="📧 "+(UREC.email||ME.email);
+ setT("meRole",ROLEFA[UREC.role||"user"]+(UREC.role==="owner"?" ✅":""));
+ $("mePrem").innerHTML=UREC.premium?'<span class="bdg gold">💎 الرون فعاله</span>':'<span class="bdg">بدون پرمیوم</span>';
+ setT("sideStatus",ROLEFA[UREC.role||"user"]+(UREC.premium?" • 💎":""));
+ renderColors()}
+function saveName(){const n=$("meName").value.trim();if(!n)return;db.ref("users/"+ME.uid+"/name").set(n).then(()=>toast("✅ ذخیره شد"))}
+function saveBio(){const n=$("meBio").value.trim().slice(0,150);db.ref("users/"+ME.uid+"/bio").set(n).then(()=>toast("✅ بیو ذخیره شد"))}
+const COLORS=[["نارنجی کلاسیک","",false],["طلایی 💎","#fbbf24",true],["سایبری 💎","#22d3ee",true],["نئون صورتی 💎","#e879f9",true]];
+function renderColors(){const c=$("cColors");if(!c)return;c.innerHTML="";
+ const can=UREC&&(UREC.premium||UREC.role==="owner");
+ const cur=(UREC.companion&&UREC.companion.color)||"";
+ COLORS.forEach(col=>{const b=document.createElement("button");b.className="gchip"+(cur===col[1]&&cur!==""?" on":"");
+  b.textContent=col[0];b.onclick=()=>{if(col[2]&&!can)return toast("این رنگ مخصوص پرمیومه 💎",1);
+   db.ref("users/"+ME.uid+"/companion/color").set(col[1]).then(()=>{npcColor(col[1]);toast("🥷 رنگ کاراکتر عوض شد")})};
+  c.appendChild(b)})}
+function doSearch(q){Q=q.trim();fillGenres("همه");renderShop(_prods)}
+function out(){if(ME)db.ref("chat/global/presence/"+ME.uid).remove().catch(()=>{});auth.signOut().then(()=>location.reload())}
+const SCROLLS={};
+function show(v){SCROLLS[CURV]=window.scrollY;CURV=v;closeNotifs();
+ document.querySelectorAll(".view").forEach(x=>x.classList.add("hidden"));const el=$("v-"+v);if(el)el.classList.remove("hidden");
+ document.querySelectorAll("[data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+ window.scrollTo(0,SCROLLS[v]||0);
+ if(v==="chat"){seenC=Date.now();unreadC=0;pingBell()}}
+function chatOn(p){const q=db.ref("chat/"+p).limitToLast(120);
+ const paint=s=>{const m=s.val(),box=$(p==="global"?"gBox":"sBox");if(!box||!m)return;
+  const d=document.createElement("div");d.className="msg"+(ME&&m.uid===ME.uid?" me":"")+(USERS[m.uid]&&USERS[m.uid].premium?" prem":"");
+  const meta=document.createElement("div");meta.className="mmeta";meta.textContent=(m.name||"")+" • "+ft(m.t);
+  const u=USERS[m.uid];if(u&&u.premium){const b=document.createElement("span");b.className="bdg gold";b.style.fontSize="9px";b.textContent="💎";meta.appendChild(b)}
+  d.appendChild(meta);
+  const tx=document.createElement("div");tx.textContent=m.text||"";d.appendChild(tx);
+  const rc=document.createElement("div");rc.className="reac";
+  const addR=(e,n)=>{const sp=document.createElement("span");sp.textContent=e+" "+(n||"");sp.onclick=()=>db.ref("chat/"+p+"/"+s.key+"/reactions/"+e).transaction(v=>(v||0)+1).catch(()=>{});rc.appendChild(sp)};
+  if(m.reactions)Object.keys(m.reactions).forEach(e=>addR(e,m.reactions[e]));
+  const ad=document.createElement("span");ad.className="addre";ad.textContent="➕";
+  ad.onclick=()=>{const e=prompt("ایموجی ری‌اکشن:","❤️");if(e)db.ref("chat/"+p+"/"+s.key+"/reactions/"+e).transaction(v=>(v||0)+1).catch(()=>{})};
+  rc.appendChild(ad);
+  const canDel=ME&&(m.uid===ME.uid||(UREC&&UREC.role==="owner"));
+  if(canDel){const dl=document.createElement("span");dl.className="mdel";dl.textContent="🗑";
+   dl.onclick=()=>{if(confirm("حذف بشه؟"))db.ref("chat/"+p+"/"+s.key).remove()};rc.appendChild(dl)}
+  d.appendChild(rc);box.appendChild(d);box.scrollTop=box.scrollHeight;
+  if(p==="global"&&ME&&m.uid!==ME.uid&&m.t>seenC&&CURV!=="chat"){unreadC++;pingBell()}};
+ q.on("child_added",paint);q.on("child_changed",paint)}
+function typing(){clearTimeout(window._tt);
+ db.ref("chat/global/typing/"+ME.uid).set({n:(UREC&&UREC.name)||"",t:Date.now()}).catch(()=>{});
+ window._tt=setTimeout(()=>db.ref("chat/global/typing/"+ME.uid).remove().catch(()=>{}),2200)}
+function watchTyping(){db.ref("chat/global/typing").on("value",s=>{const v=s.val()||{},now=Date.now();
+ const names=Object.keys(v).filter(k=>k!==ME.uid&&now-(v[k].t||0)<4000).map(k=>v[k].n);
+ const g=$("gTyping");if(g)g.textContent=names.length?names.join("، ")+" در حال نوشتن…":""})}
+function send(p){const t=$(p==="global"?"gIn":"sIn").value.trim();if(!t||!ME)return;
+ if(Date.now()-lastSend<2500)return toast("آروم‌تر! ضداسپم فعاله ⏳",1);lastSend=Date.now();
+ db.ref("chat/"+p).push({uid:ME.uid,name:(UREC&&UREC.name)||"کاربر",text:t.slice(0,400),t:Date.now()}).then(()=>{if(p==="global")db.ref("chat/global/typing/"+ME.uid).remove()}).catch(()=>toast("خطا در ارسال",1));
+ $(p==="global"?"gIn":"sIn").value=""}
+/* ===== NINJA GUIDE (no walking — stands, waves, guides) ===== */
+const TIPS=["YO! من راهنمای رونینم 🥷","توی جامعه پست بذار و لایک بگیر!","چت عمومی پایین منوه 💬","پرمیوم = رنگ‌های ویژه من! 💎","فرمانده می‌تونه مقام بده 👑","آگهی بده تا مارکت پر شه 📢"];
+let npcT=null;
+function npcSay(t){const b=$("npcBub");if(!b)return;b.textContent=t;b.classList.add("show");clearTimeout(npcT);npcT=setTimeout(()=>b.classList.remove("show"),3800)}
+function npcWave(){const n=$("npc");n.classList.remove("wave");void n.offsetWidth;n.classList.add("wave");npcSay(TIPS[Math.floor(Math.random()*TIPS.length)])}
+function npcColor(c){const svg=document.querySelector("#npc svg");if(!svg)return;svg.querySelectorAll("[fill='#f97316']").forEach(x=>x.setAttribute("fill",c||"#f97316"))}
+function npcInit(){
+ const c=(UREC&&UREC.companion&&UREC.companion.color);if(c)npcColor(c);
+ setTimeout(()=>npcSay("YO! خوش اومدی رونین! 🥷"),2500);
+ setInterval(()=>{if(!document.hidden&&Math.random()<.5)npcSay(TIPS[Math.floor(Math.random()*TIPS.length)])},26000)}
+window.addEventListener("scroll",()=>{$("top").classList.toggle("sc",window.scrollY>60)},{passive:true});
+function seed(){
+ db.ref("news").limitToLast(1).once("value").then(s=>{if(!s.exists()){["🚀 رونین استور نسخه سایبری آنلاین شد!","💎 باشگاه الرون افتتاح شد — امتیازات ویژه بگیرید!","🥷 راهنمای نینجا به سایت اضافه شد — روش کلیک کن!"].forEach(t=>db.ref("news").push({txt:t,by:"تحریریه رونین",t:Date.now()}))}}).catch(()=>{});
+ db.ref("products").limitToLast(1).once("value").then(s=>{if(!s.exists()){
+  [["فیگور نینجای نارنجی","۱۴۹٬۰۰۰","🎎","فیگور کلکسیونی","ویژه"],["شمشیر شکارچی شب","۳۸۹٬۰۰۰","🗡️","نسخه نمایشی","محدود"],["پک کارت اژدها","۸۹٬۰۰۰","🃏","۵۰ کارت کلکسیونی",""],["هودی شهر نئون","۵۹۰٬۰۰۰","🧥","پنبه درجه‌یک",""]].forEach(x=>db.ref("products").push({name:x[0],price:x[1],icon:x[2],desc:x[3],badge:x[4],by:"رونین آفیشال",rating:"۹.۰",t:Date.now()}))}}).catch(()=>{})}
+</script>
+</body>
+</html>
