@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#050511"/>
+<title>RONIN STORE — Anime Universe V12</title>
+<style>
+:root{--bg:#03040c;--panel:rgba(8,10,28,.78);--line:rgba(132,124,255,.25);--text:#f7f5ff;--muted:#a8a7c3;--purple:#9a63ff;--blue:#37bfff;--pink:#ff4fcf;--gold:#ffd66b;--good:#53e5b1;--danger:#ff547d;--r:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 75% 12%,rgba(120,70,255,.22),transparent 40%),radial-gradient(circle at 15% 70%,rgba(0,150,255,.14),transparent 45%),linear-gradient(180deg,#03040c,#060818 60%,#03040c)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:none}
+button:focus-visible,input:focus-visible{outline:2px solid #8fdcff}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#443b75;border-radius:20px}
+.hidden{display:none!important}
+/* ---- AUTH ---- */
+#authScreen{min-height:100vh;display:grid;place-items:center;padding:18px}
+.auth-card{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:28px;backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.6)}
+.auth-logo{text-align:center;font-size:30px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,var(--purple),var(--blue),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
+.auth-sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:20px}
+.tabs{display:flex;gap:8px;margin-bottom:18px}
+.tabs button{flex:1;padding:11px;border-radius:12px;background:transparent;color:var(--muted);border:1px solid transparent;font-weight:700}
+.tabs button.on{background:linear-gradient(90deg,rgba(115,76,255,.35),rgba(31,143,255,.15));border-color:var(--line);color:#fff}
+.fld{margin-bottom:12px}
+.fld input,.fld select,.fld textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(3,4,15,.7);color:var(--text)}
+.btn{width:100%;padding:13px;border-radius:12px;font-weight:800;color:#fff;background:linear-gradient(90deg,#7b3ff2,#2f9dff);box-shadow:0 10px 30px rgba(110,60,255,.35)}
+.btn:disabled{opacity:.55}
+.btn.gold{background:linear-gradient(90deg,#c98a1e,#ffdf7e);color:#221a00}
+.btn.red{background:linear-gradient(90deg,#d92556,#ff7a95)}
+.btn.ghost{background:rgba(255,255,255,.07);border:1px solid var(--line);box-shadow:none}
+.err{color:var(--danger);font-size:13px;min-height:18px;margin-top:8px;text-align:center}
+/* ---- LAYOUT ---- */
+.sidebar{position:fixed;top:12px;right:12px;bottom:12px;width:225px;z-index:50;display:flex;flex-direction:column;padding:14px;background:rgba(5,7,20,.85);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(20px)}
+.brand{font-weight:900;font-size:19px;text-align:center;padding:8px 0 14px;border-bottom:1px solid rgba(255,255,255,.08);background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav{display:grid;gap:5px;margin-top:12px;overflow:auto}
+.nav button{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:13px;background:transparent;color:#cbc9dc;text-align:right;transition:.15s}
+.nav button:hover{background:rgba(143,99,255,.12);color:#fff}
+.nav button.active{background:linear-gradient(90deg,rgba(115,76,255,.34),rgba(31,143,255,.12));color:#fff}
+.nav .dot-g{margin-right:auto;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.side-user{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:10px;font-size:13px}
+.side-user b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side-user span{color:var(--muted);font-size:12px}
+main{margin:12px 255px 12px 12px;min-height:calc(100vh - 24px)}
+main>section{display:none;animation:fade .25s}
+main>section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;backdrop-filter:blur(14px)}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+h2.sec{margin:4px 0 14px;font-size:20px}
+.hero{padding:34px 24px;border-radius:24px;background:linear-gradient(120deg,rgba(120,60,255,.30),rgba(0,140,255,.14) 55%,rgba(255,60,200,.16));border:1px solid var(--line);margin-bottom:16px}
+.hero h1{margin:0 0 8px;font-size:30px}
+.hero p{margin:0;color:#d8d5f0}
+.chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.chip.owner{background:rgba(255,214,107,.16);color:var(--gold);border:1px solid rgba(255,214,107,.4)}
+.chip.manager{background:rgba(154,99,255,.16);color:#c9a6ff;border:1px solid rgba(154,99,255,.4)}
+.chip.employee{background:rgba(55,191,255,.14);color:#7fd4ff;border:1px solid rgba(55,191,255,.4)}
+.chip.user{background:rgba(255,255,255,.08);color:var(--muted);border:1px solid rgba(255,255,255,.15)}
+.chip.pend{background:rgba(255,214,107,.12);color:var(--gold)}
+.chip.ok{background:rgba(83,229,177,.14);color:var(--good)}
+.chip.no{background:rgba(255,84,125,.14);color:var(--danger)}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:center}
+.pcard .emoji{font-size:46px;line-height:1.2}
+.pcard h3{margin:8px 0 4px;font-size:16px}
+.price{color:var(--gold);font-weight:800}
+.pcard p{color:var(--muted);font-size:12.5px;min-height:32px}
+.prod-img{width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:8px;background:linear-gradient(135deg,#2a1e5c,#123a5c)}
+/* ---- CHAT ---- */
+.chat-box{height:430px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:12px;background:rgba(3,4,15,.55);border:1px solid var(--line);border-radius:14px;margin-bottom:10px}
+.msg{max-width:78%;padding:9px 13px;border-radius:14px;background:rgba(120,90,255,.13);border:1px solid rgba(132,124,255,.22);align-self:flex-start}
+.msg.me{align-self:flex-end;background:rgba(55,191,255,.14)}
+.msg .who{font-size:11.5px;color:#cfc7ff;margin-bottom:3px}
+.msg .txt{font-size:14px;word-break:break-word}
+.msg .when{font-size:10px;color:var(--muted);margin-top:3px}
+.chat-row{display:flex;gap:8px}
+.chat-row input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(3,4,15,.7);color:var(--text)}
+.chat-row button{padding:0 22px;border-radius:12px;font-weight:800;color:#fff;background:linear-gradient(90deg,#7b3ff2,#2f9dff)}
+.rowline{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+.rowline:last-child{border-bottom:none}
+.muted{color:var(--muted);font-size:12.5px}
+.subtabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.subtabs button{padding:9px 16px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);font-weight:700}
+.subtabs button.on{background:linear-gradient(90deg,rgba(115,76,255,.35),rgba(31,143,255,.15));color:#fff}
+#toast{position:fixed;bottom:22px;right:50%;transform:translate(50%,80px);background:#1b1f3d;border:1px solid var(--line);color:#fff;padding:12px 20px;border-radius:12px;z-index:99;opacity:0;transition:.3s;font-size:14px}
+#toast.show{opacity:1;transform:translate(50%,0)}
+.news-item{padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.feature{display:flex;gap:12px;align-items:center;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+.feature .fe{font-size:26px}
+@media(max-width:860px){
+ .sidebar{position:static;width:auto;margin:10px;flex-direction:row;align-items:center;gap:10px}
+ .nav{display:flex;margin:0;overflow-x:auto}.nav button{white-space:nowrap;padding:8px 10px}
+ .side-user{margin:0;border:none;padding:0}.brand{border:none;padding:0}
+ main{margin:0 10px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== AUTH ===== -->
+<div id="authScreen">
+ <div class="auth-card">
+  <div class="auth-logo">RONIN STORE</div>
+  <div class="auth-sub">انیمه • فروشگاه • تبلیغات • چت — نسخه V12</div>
+  <div class="tabs">
+   <button id="tabLogin" class="on" onclick="authTab('login')">ورود</button>
+   <button id="tabReg" onclick="authTab('reg')">ثبت‌نام</button>
+  </div>
+  <div id="authErr" class="err"></div>
+  <div class="fld"><input id="fEmail" type="email" placeholder="ایمیل" autocomplete="email"/></div>
+  <div class="fld"><input id="fPass" type="password" placeholder="رمز عبور (حداقل ۶ کاراکتر)" autocomplete="current-password"/></div>
+  <button class="btn" id="btnAuth" onclick="doAuth()">ورود به رونین</button>
+  <div class="auth-sub" style="margin-top:14px">👑 اولین نفری که ثبت‌نام کند، مالک سایت می‌شود</div>
+ </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="hidden">
+ <aside class="sidebar">
+  <div class="brand">RONIN ⚔️ STORE</div>
+  <div class="nav">
+   <button data-view="home" class="active" onclick="show('home')">🏠 خانه</button>
+   <button data-view="shop" onclick="show('shop')">🛒 فروشگاه</button>
+   <button data-view="ads" onclick="show('ads')">📣 تبلیغات</button>
+   <button data-view="chat" onclick="show('chat')">💬 چت جهانی</button>
+   <button data-view="staff" id="navStaff" class="hidden" onclick="show('staff')">🔐 چت کارکنان</button>
+   <button data-view="admin" id="navAdmin" class="hidden" onclick="show('admin')">🛠️ پنل مدیریت</button>
+   <button data-view="profile" onclick="show('profile')">👤 حساب من</button>
+  </div>
+  <div class="side-user"><b id="sideName">—</b><span id="sideRole">—</span></div>
+ </aside>
+ <main>
+
+  <section id="view-home" class="active">
+   <div class="hero">
+    <h1>به رونین استور خوش آمدید 🌸</h1>
+    <p>مرکز انیمه، فروش کالای شرکت‌های مختلف و تبلیغات — کاملاً زنده و آنلاین</p>
+   </div>
+   <div class="card" style="margin-bottom:14px">
+    <h2 class="sec">📢 اعلان‌ها</h2>
+    <div id="newsList"><div class="muted">هنوز خبری ثبت نشده.</div></div>
+   </div>
+   <div class="grid g3">
+    <div class="feature"><div class="fe">🛒</div><div><b>فروشگاه محصولات</b><div class="muted">کالاهای رسمی شرکت‌های مختلف</div></div></div>
+    <div class="feature"><div class="fe">📣</div><div><b>تبلیغ اجناس شما</b><div class="muted">ثبت آگهی و تایید توسط تیم</div></div></div>
+    <div class="feature"><div class="fe">💬</div><div><b>چت زنده</b><div class="muted">گفتگوی جهانی کاربران</div></div></div>
+    <div class="feature"><div class="fe">👑</div><div><b>عضویت پرمیوم</b><div class="muted">امتیازات ویژه اعضا</div></div></div>
+   </div>
+  </section>
+
+  <section id="view-shop">
+   <h2 class="sec">🛒 فروشگاه</h2>
+   <div class="card" id="shopWrap"><div class="grid g3" id="prodList"><div class="muted">در حال بارگذاری…</div></div></div>
+  </section>
+
+  <section id="view-ads">
+   <h2 class="sec">📣 تبلیغات تایید‌شده</h2>
+   <div class="card" style="margin-bottom:14px">
+    <h3 style="margin-top:0">ثبت آگهی جدید</h3>
+    <div class="fld"><input id="adTitle" placeholder="نام آگهی / محصول"/></div>
+    <div class="fld"><input id="adCompany" placeholder="نام شرکت یا فروشنده"/></div>
+    <div class="fld"><input id="adPrice" type="number" placeholder="قیمت (تومان)"/></div>
+    <div class="fld"><input id="adImage" placeholder="لینک عکس (اختیاری)"/></div>
+    <div class="fld"><textarea id="adDesc" rows="2" placeholder="توضیحات"></textarea></div>
+    <button class="btn" onclick="submitAd()">ارسال برای تایید</button>
+   </div>
+   <div class="grid g3" id="adsList"><div class="muted">آگهی تایید‌شده‌ای نیست.</div></div>
+  </section>
+
+  <section id="view-chat">
+   <h2 class="sec">💬 چت جهانی کاربران</h2>
+   <div class="card">
+    <div class="chat-box" id="boxGlobal"></div>
+    <div class="chat-row"><input id="inGlobal" placeholder="پیام خود را بنویسید…" onkeydown="if(event.key==='Enter')sendChat('chat/global','inGlobal')"/><button onclick="sendChat('chat/global','inGlobal')">ارسال</button></div>
+   </div>
+  </section>
+
+  <section id="view-staff">
+   <h2 class="sec">🔐 چت خصوصی تیم (برای کاربران عادی نامرئی)</h2>
+   <div class="card">
+    <div class="chat-box" id="boxStaff"></div>
+    <div class="chat-row"><input id="inStaff" placeholder="پیام داخلی تیم…" onkeydown="if(event.key==='Enter')sendChat('chat/staff','inStaff')"/><button onclick="sendChat('chat/staff','inStaff')">ارسال</button></div>
+   </div>
+  </section>
+
+  <section id="view-admin">
+   <h2 class="sec">🛠️ پنل مدیریت</h2>
+   <div class="subtabs">
+    <button class="on" onclick="admTab('u',this)">👥 کاربران</button>
+    <button onclick="admTab('a',this)">📣 آگهی‌ها</button>
+    <button onclick="admTab('p',this)">🛒 محصولات</button>
+    <button onclick="admTab('n',this)">📢 اعلان‌ها</button>
+    <button onclick="admTab('pay',this)">💳 پرداخت‌ها</button>
+   </div>
+   <div id="admU" class="card"><div class="muted">در حال بارگذاری کاربران…</div></div>
+   <div id="admA" class="card hidden"><div class="muted">در حال بارگذاری آگهی‌ها…</div></div>
+   <div id="admP" class="card hidden">
+    <div class="fld"><input id="pTitle" placeholder="نام محصول"/></div>
+    <div class="fld"><input id="pPrice" type="number" placeholder="قیمت (تومان)"/></div>
+    <div class="fld"><input id="pEmoji" placeholder="ایموجی محصول (مثلاً ⚔️)" value="🎁"/></div>
+    <div class="fld"><input id="pImage" placeholder="لینک عکس (اختیاری)"/></div>
+    <div class="fld"><input id="pDesc" placeholder="توضیح کوتاه"/></div>
+    <button class="btn" onclick="addProduct()">افزودن محصول</button>
+    <div id="prodAdminList" style="margin-top:14px"></div>
+   </div>
+   <div id="admN" class="card hidden">
+    <div class="fld"><input id="nText" placeholder="متن اعلان…"/></div>
+    <button class="btn" onclick="addNews()">ثبت اعلان</button>
+    <div id="newsAdminList" style="margin-top:14px"></div>
+   </div>
+   <div id="admPay" class="card hidden"><div class="muted">در حال بارگذاری پرداخت‌ها…</div></div>
+  </section>
+
+  <section id="view-profile">
+   <h2 class="sec">👤 حساب من</h2>
+   <div class="card">
+    <div class="rowline"><span>ایمیل</span><b id="pfEmail">—</b></div>
+    <div class="rowline"><span>نام نمایشی</span><input id="pfName" style="max-width:220px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(3,4,15,.7);color:#fff"/></div>
+    <div class="rowline"><span>مقام</span><span id="pfRole" class="chip user">—</span></div>
+    <div class="rowline"><span>وضعیت پرمیوم</span><span id="pfPrem" class="chip no">غیرفعال</span></div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+     <button class="btn ghost" style="width:auto;padding:11px 22px" onclick="saveName()">ذخیره نام</button>
+     <button class="btn gold" style="width:auto;padding:11px 22px" id="btnPrem" onclick="buyPremium()">👑 خرید عضویت پرمیوم (۹۹٬۰۰۰ تومان)</button>
+     <button class="btn red" style="width:auto;padding:11px 22px" onclick="logout()">خروج</button>
+    </div>
+   </div>
+  </section>
+
+ </main>
+</div>
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig={apiKey:"AIzaSyCoGypb6NCmmHr2sK4FLreF4He48QPcLL8",authDomain:"ronin-store-3d738.firebaseapp.com",databaseURL:"https://ronin-store-3d738-default-rtdb.firebaseio.com",projectId:"ronin-store-3d738",storageBucket:"ronin-store-3d738.firebasestorage.app",messagingSenderId:"7231014477",appId:"1:7231014477:web:1607de8a1f602d4ff9be04",measurementId:"G-2B6RH66NTW"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(),db=firebase.database();
+let ME=null,PROF=null,L=[];// L=listeners
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ROLE={owner:"👑 مالک",manager:"🛡️ مدیر",employee:"💼 کارمند",user:"کاربر"};
+const CH={owner:"owner",manager:"manager",employee:"employee",user:"user"};
+const isStaff=()=>PROF&&["owner","manager","employee"].includes(PROF.role);
+const isOwner=()=>PROF&&PROF.role==="owner";
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove("show"),3200);}
+function show(v){document.querySelectorAll("main>section").forEach(s=>s.classList.remove("active"));const el=$("#view-"+v);if(el)el.classList.add("active");document.querySelectorAll(".nav button[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===v));}
+function authTab(w){$("#tabLogin").classList.toggle("on",w==="login");$("#tabReg").classList.toggle("on",w==="reg");$("#btnAuth").textContent=w==="login"?"ورود به رونین":"ساخت حساب جدید";$("#btnAuth").dataset.mode=w;$("#authErr").textContent="";}
+function errFa(e){const m={"auth/invalid-email":"ایمیل نامعتبر است.","auth/user-not-found":"چنین حسابی وجود ندارد.","auth/wrong-password":"رمز عبور اشتباه است.","auth/invalid-credential":"ایمیل یا رمز اشتباه است.","auth/email-already-in-use":"این ایمیل قبلاً ثبت شده — وارد شوید.","auth/weak-password":"رمز عبور حداقل ۶ کاراکتر باشد.","auth/network-request-failed":"خطای شبکه — اینترنت را چک کنید."};return m[e.code]||("خطا: "+(e.message||e));}
+async function doAuth(){
+ const btn=$("#btnAuth"),mode=btn.dataset.mode||"login",email=$("#fEmail").value.trim(),pass=$("#fPass").value;
+ $("#authErr").textContent="";btn.disabled=true;
+ try{
+  if(mode==="reg"){await auth.createUserWithEmailAndPassword(email,pass);}
+  else{await auth.signInWithEmailAndPassword(email,pass);}
+ }catch(e){$("#authErr").textContent=errFa(e);}
+ btn.disabled=false;
+}
+function logout(){detachAll();auth.signOut();}
+function detachAll(){L.forEach(l=>{try{l.q.off(l.ev,l.cb);}catch(e){}});L=[];}
+function listen(path,ev,cb){const q=db.ref(path);const w=(s)=>cb(s);q.on(ev,w);L.push({q,ev,cb:w});return q;}
+
+/* ---------- AUTH STATE + OWNER CLAIM ---------- */
+auth.onAuthStateChanged(async u=>{
+ if(!u){ME=null;PROF=null;detachAll();$("#app").classList.add("hidden");$("#authScreen").classList.remove("hidden");return;}
+ ME=u;$("#authScreen").classList.add("hidden");
+ try{await ensureProfile(u);}catch(e){toast("خطا در پروفایل: "+(e.message||e));}
+});
+async function ensureProfile(u){
+ const ref=db.ref("users/"+u.uid);
+ let snap=await ref.get();
+ if(!snap.exists()){
+  await ref.set({uid:u.uid,email:u.email,name:(u.email||"کاربر").split("@")[0],role:"user",premium:false,createdAt:Date.now()});
+ }
+ snap=await ref.get();PROF=snap.val()||{role:"user"};
+ if(PROF.role==="user"){
+  try{
+   const res=await db.ref("meta/ownerClaimed").transaction(cur=>cur===null?u.uid:undefined);
+   if(res.committed&&res.snapshot.val()===u.uid){
+    await db.ref("users/"+u.uid+"/role").transaction(cur=>cur==="user"?"owner":undefined);
+    PROF=(await ref.get()).val();
+    toast("🎉 شما مالک سایت شدید! محتوای پیش‌فرض نصب شد.");
+    await seedDefaults();
+   }
+  }catch(e){}
+ }
+ enterApp();
+}
+async function seedDefaults(){
+ try{
+  const prods=[{title:"کاتانا دمون‌اسلیر",price:1450000,emoji:"⚔️",desc:"شمشیر تزئینی تانجیرو — کیفیت کلکسیونی"},{title:"هودی اوتاکو پرمیوم",price:780000,emoji:"🧥",desc:"هودی نخی انیمه با چاپ ماندگار"},{title:"فیگور گوکو Ultra",price:2100000,emoji:"🥋",desc:"فیگور رزین ۳۰ سانتی — ادیشن محدود"},{title:"پوستر کانواس ناروتو",price:320000,emoji:"🖼️",desc:"چاپ کانواس ۵۰×۷۰ سانتی‌متر"}];
+  const pr=db.ref("products");const ex=await pr.get();if(!ex.exists()){prods.forEach(p=>pr.push(p));}
+  const nr=db.ref("news");const exn=await nr.get();if(!exn.exists()){nr.push({text:"به RONIN STORE V12 خوش آمدید! فروشگاه و چت فعال است 🌸",at:Date.now()});}
+ }catch(e){}
+}
+function enterApp(){
+ $("#app").classList.remove("hidden");
+ const name=PROF.name||ME.email;
+ $("#sideName").textContent=name;$("#sideRole").textContent=ROLE[PROF.role]||"کاربر";
+ $("#pfEmail").textContent=ME.email;$("#pfName").value=PROF.name||"";
+ const rc=$("#pfRole");rc.textContent=ROLE[PROF.role]||"کاربر";rc.className="chip "+(CH[PROF.role]||"user");
+ const pc=$("#pfPrem");pc.textContent=PROF.premium?"فعال ✅":"غیرفعال";pc.className="chip "+(PROF.premium?"ok":"no");
+ $("#btnPrem").classList.toggle("hidden",!!PROF.premium);
+ $("#navAdmin").classList.toggle("hidden",!isStaff());
+ $("#navStaff").classList.toggle("hidden",!isStaff());
+ startListeners();
+ show("home");
+}
+function startListeners(){
+ detachAll();
+ listen("chat/global","child_added",s=>addMsg("boxGlobal",s.val()));
+ if(isStaff()){listen("chat/staff","child_added",s=>addMsg("boxStaff",s.val()));
+  listen("ads","value",s=>renderAdminAds(s.val()));
+  listen("payments","value",s=>renderPayments(s.val()));
+ }
+ listen("products","value",s=>renderProducts(s.val()));
+ listen("news","value",s=>renderNews(s.val()));
+ if(isStaff()){listen("users","value",s=>renderUsers(s.val()));}
+}
+
+/* ---------- CHAT ---------- */
+function addMsg(boxId,m){
+ const box=$("#"+boxId);if(!box||!m)return;
+ const me=m.uid===ME.uid;
+ const d=document.createElement("div");d.className="msg"+(me?" me":"");
+ const rc=CH[m.role]||"user";
+ d.innerHTML='<div class="who">'+esc(m.name||"کاربر")+' <span class="chip '+rc+'">'+esc(ROLE[m.role]||"کاربر")+"</span></div>"+'<div class="txt">'+esc(m.text)+"</div>"+'<div class="when">'+new Date(m.at||Date.now()).toLocaleTimeString("fa-IR")+"</div>";
+ box.appendChild(d);box.scrollTop=box.scrollHeight;
+ while(box.children.length>160)box.removeChild(box.firstChild);
+}
+function sendChat(path,inId){
+ const inp=$("#"+inId),text=inp.value.trim();if(!text)return;
+ if(text.length>500){toast("پیام خیلی طولانی است.");return;}
+ db.ref(path).push({uid:ME.uid,name:PROF.name||"کاربر",role:PROF.role||"user",text:text,at:Date.now()});
+ inp.value="";
+}
+
+/* ---------- SHOP / NEWS / ADS ---------- */
+function renderProducts(v){
+ const el=$("#prodList");el.innerHTML="";const list=v?Object.entries(v):[];
+ if(!list.length){el.innerHTML='<div class="muted">فروشگاه خالی است — مدیر می‌تواند از پنل مدیریت محصول اضافه کند.</div>';return;}
+ list.forEach(([k,p])=>{
+  const d=document.createElement("div");d.className="pcard";
+  d.innerHTML=(p.image?'<img class="prod-img" src="'+esc(p.image)+'" alt=""/>':'<div class="emoji">'+esc(p.emoji||"🎁")+"</div>")+"<h3>"+esc(p.title||"")+'</h3><div class="price">'+Number(p.price||0).toLocaleString("fa-IR")+" تومان</div><p>"+esc(p.desc||"")+"</p>"+'<button class="btn" style="margin-top:8px">خرید</button>';
+  d.querySelector("button").onclick=()=>buy(k,p);
+  el.appendChild(d);
+ });
+ const pa=$("#prodAdminList");if(pa){pa.innerHTML="";list.forEach(([k,p])=>{const r=document.createElement("div");r.className="rowline";r.innerHTML="<b>"+esc(p.title||"")+'</b><span class="muted">'+Number(p.price||0).toLocaleString("fa-IR")+' تومان</span><button class="btn red" style="width:auto;padding:7px 14px">حذف</button>';r.querySelector("button").onclick=()=>db.ref("products/"+k).remove();pa.appendChild(r);});}
+}
+function renderNews(v){
+ const el=$("#newsList");el.innerHTML="";const list=v?Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,6):[];
+ if(!list.length){el.innerHTML='<div class="muted">هنوز خبری ثبت نشده.</div>';return;}
+ list.forEach(n=>{const d=document.createElement("div");d.className="news-item";d.innerHTML="📣 "+esc(n.text||"")+' <span class="muted">— '+new Date(n.at||Date.now()).toLocaleDateString("fa-IR")+"</span>";el.appendChild(d);});
+ const na=$("#newsAdminList");if(na){na.innerHTML="";Object.entries(v||{}).forEach(([k,n])=>{const r=document.createElement("div");r.className="rowline";r.innerHTML="<span>"+esc(n.text||"")+'</span><button class="btn red" style="width:auto;padding:7px 14px">حذف</button>';r.querySelector("button").onclick=()=>db.ref("news/"+k).remove();na.appendChild(r);});}
+}
+function renderAds(v){
+ const el=$("#adsList");el.innerHTML="";const list=v?Object.entries(v).filter(([k,a])=>a.status==="approved"):[];
+ if(!list.length){el.innerHTML='<div class="muted">آگهی تایید‌شده‌ای نیست.</div>';return;}
+ list.forEach(([k,a])=>{const d=document.createElement("div");d.className="pcard";d.innerHTML=(a.image?'<img class="prod-img" src="'+esc(a.image)+'" alt=""/>':'<div class="emoji">📣</div>')+"<h3>"+esc(a.title||"")+"</h3>"+'<div class="muted">'+esc(a.company||"")+"</div>"+'<div class="price">'+Number(a.price||0).toLocaleString("fa-IR")+" تومان</div><p>"+esc(a.desc||"")+"</p>";el.appendChild(d);});
+}
+async function submitAd(){
+ const t=$("#adTitle").value.trim();if(!t){toast("نام آگهی را بنویسید.");return;}
+ await db.ref("ads").push({uid:ME.uid,name:PROF.name||"کاربر",title:t,company:$("#adCompany").value.trim(),price:+$("#adPrice").value||0,image:$("#adImage").value.trim(),desc:$("#adDesc").value.trim(),status:"pending",createdAt:Date.now()});
+ ["adTitle","adCompany","adPrice","adImage","adDesc"].forEach(id=>$("#"+id).value="");
+ toast("✅ آگهی ثبت شد؛ پس از تایید تیم نمایش داده می‌شود.");
+}
+function renderAdminAds(v){
+ const el=$("#admA");el.innerHTML="";const list=v?Object.entries(v):[];
+ if(!list.length){el.innerHTML='<div class="muted">آگهی‌ای ثبت نشده.</div>';return;}
+ list.forEach(([k,a])=>{
+  const r=document.createElement("div");r.className="rowline";
+  const st=a.status==="approved"?'<span class="chip ok">تایید شده</span>':a.status==="rejected"?'<span class="chip no">رد شده</span>':'<span class="chip pend">در انتظار</span>';
+  r.innerHTML="<div><b>"+esc(a.title||"")+'</b> <span class="muted">('+esc(a.name||"")+")</span><div class='muted'>"+esc(a.company||"")+" — "+Number(a.price||0).toLocaleString("fa-IR")+" تومان</div></div>"+st;
+  const bx=document.createElement("div");bx.style.display="flex";bx.style.gap="6px";
+  if(a.status!=="approved"){const b1=document.createElement("button");b1.className="btn";b1.style.width="auto";b1.style.padding="7px 14px";b1.textContent="تایید";b1.onclick=()=>db.ref("ads/"+k).update({status:"approved"});bx.appendChild(b1);}
+  if(a.status!=="rejected"){const b2=document.createElement("button");b2.className="btn red";b2.style.width="auto";b2.style.padding="7px 14px";b2.textContent="رد";b2.onclick=()=>db.ref("ads/"+k).update({status:"rejected"});bx.appendChild(b2);}
+  const b3=document.createElement("button");b3.className="btn ghost";b3.style.width="auto";b3.style.padding="7px 14px";b3.textContent="حذف";b3.onclick=()=>db.ref("ads/"+k).remove();bx.appendChild(b3);
+  r.appendChild(bx);el.appendChild(r);
+ });
+}
+
+/* ---------- ADMIN ---------- */
+function admTab(w,btn){
+ document.querySelectorAll("#view-admin .subtabs button").forEach(b=>b.classList.remove("on"));btn.classList.add("on");
+ ["u","a","p","n","pay"].forEach(x=>$("#adm"+x.charAt(0).toUpperCase()+x.slice(1)).classList.add("hidden"));
+ $("#adm"+w.charAt(0).toUpperCase()+w.slice(1)).classList.remove("hidden");
+}
+function renderUsers(v){
+ const el=$("#admU");el.innerHTML="";const list=v?Object.entries(v):[];
+ if(!list.length){el.innerHTML='<div class="muted">کاربری نیست.</div>';return;}
+ list.forEach(([uid,p])=>{
+  const r=document.createElement("div");r.className="rowline";
+  const rc=CH[p.role]||"user";
+  r.innerHTML="<div><b>"+esc(p.name||p.email||uid)+"</b> <span class='chip "+rc+"'>"+esc(ROLE[p.role]||"کاربر")+"</span><div class='muted'>"+esc(p.email||"")+(p.premium?" • پرمیوم 👑":"")+"</div></div>";
+  if(isOwner()&&uid!==ME.uid){
+   const sel=document.createElement("select");sel.style.cssText="padding:8px;border-radius:10px;border:1px solid var(--line);background:#0a0c20;color:#fff";
+   ["user","employee","manager","owner"].forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=ROLE[x];if(p.role===x)o.selected=true;sel.appendChild(o);});
+   sel.onchange=async()=>{try{await db.ref("users/"+uid+"/role").set(sel.value);toast("مقام تغییر کرد ✅");}catch(e){toast("خطا: "+(e.message||e));}};
+   r.appendChild(sel);
+  }
+  el.appendChild(r);
+ });
+}
+async function addProduct(){
+ const t=$("#pTitle").value.trim();if(!t){toast("نام محصول را بنویسید.");return;}
+ await db.ref("products").push({title:t,price:+$("#pPrice").value||0,emoji:$("#pEmoji").value.trim()||"🎁",image:$("#pImage").value.trim(),desc:$("#pDesc").value.trim(),createdAt:Date.now()});
+ ["pTitle","pPrice","pImage","pDesc"].forEach(id=>$("#"+id).value="");toast("محصول اضافه شد ✅");
+}
+async function addNews(){
+ const t=$("#nText").value.trim();if(!t)return;
+ await db.ref("news").push({text:t,at:Date.now()});$("#nText").value="";toast("اعلان ثبت شد ✅");
+}
+
+/* ---------- PAYMENTS / PREMIUM ---------- */
+async function buy(key,p){
+ try{
+  await db.ref("payments").push({uid:ME.uid,name:PROF.name||"کاربر",type:"product",ref:key,title:p.title||"محصول",amount:+p.price||0,status:"pending",createdAt:Date.now()});
+  toast("🛒 سفارش ثبت شد؛ همکاران ما هماهنگ می‌کنند.");
+ }catch(e){toast("خطا: "+(e.message||e));}
+}
+async function buyPremium(){
+ try{
+  await db.ref("payments").push({uid:ME.uid,name:PROF.name||"کاربر",type:"premium",title:"عضویت پرمیوم سالانه",amount:99000,status:"pending",createdAt:Date.now()});
+  toast("💳 درخواست پرمیوم ثبت شد؛ پس از تایید مالک فعال می‌شود.");
+ }catch(e){toast("خطا: "+(e.message||e));}
+}
+function renderPayments(v){
+ const el=$("#admPay");el.innerHTML="";const list=v?Object.entries(v).sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0)):[];
+ if(!list.length){el.innerHTML='<div class="muted">پرداختی ثبت نشده.</div>';return;}
+ list.forEach(([k,pm])=>{
+  const r=document.createElement("div");r.className="rowline";
+  const st=pm.status==="approved"?'<span class="chip ok">تایید شد</span>':'<span class="chip pend">در انتظار</span>';
+  r.innerHTML="<div><b>"+esc(pm.title||"")+'</b> <span class="muted">('+esc(pm.name||"")+")</span><div class='muted'>"+Number(pm.amount||0).toLocaleString("fa-IR")+" تومان — "+new Date(pm.createdAt||Date.now()).toLocaleString("fa-IR")+"</div></div>"+st;
+  if(pm.status!=="approved"){const b=document.createElement("button");b.className="btn";b.style.width="auto";b.style.padding="7px 16px";b.textContent="تایید پرداخت";b.onclick=async()=>{try{await db.ref("payments/"+k).update({status:"approved"});if(pm.type==="premium"&&pm.uid){await db.ref("users/"+pm.uid+"/premium").set(true);}toast("پرداخت تایید شد ✅");}catch(e){toast("خطا: "+(e.message||e));}};r.appendChild(b);}
+  el.appendChild(r);
+ });
+}
+async function saveName(){
+ const n=$("#pfName").value.trim();if(!n)return;
+ try{await db.ref("users/"+ME.uid+"/name").set(n);PROF.name=n;$("#sideName").textContent=n;toast("نام ذخیره شد ✅");}catch(e){toast("خطا: "+(e.message||e));}
+}
+</script>
+</body>
+</html>
