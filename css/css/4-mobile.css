@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════════════
+   RONIN STORE — V19 «NEO RAIN CITY»               css/4-mobile.css
+   واکنشگرا: 320 • 360 • 390 • 430 • 768 • 1024 • 1440
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── فقط موبایل / فقط دسکتاپ ────────────────────────────────── */
+.only-m{display:none!important}
+@media (max-width:980px){
+  .only-m{display:block!important}
+  .no-m{display:none!important}
+}
+
+/* ── لمسپذیر: حداقل ۴۴ پیکسل ────────────────────────────────── */
+@media (pointer:coarse){
+  .btn{min-height:42px}
+  .icobtn{width:42px;height:42px}
+  .ditem,.tab{min-height:44px}
+  .act{padding:9px 12px}
+}
+
+/* ── ۱۴۴۰ و بالاتر ──────────────────────────────────────────── */
+@media (min-width:1440px){
+  :root{--rail:262px}
+  .auto{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+/* ── ۱۲۰۰ و پایینتر ───────────────────────────────────────── */
+@media (max-width:1200px){
+  :root{--rail:224px}
+  .g4{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ── ۱۰۲۴ و پایینتر: منوی کنار میره، داک میاد ──────────────── */
+@media (max-width:1024px){
+  #rail{display:none}
+  #dock{display:block}
+  #stage{padding:calc(var(--top) + 18px) 14px 100px}
+  .nav{display:none}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .hero{min-height:290px;padding:30px 20px}
+  #gninja{width:70px;bottom:104px}
+}
+
+/* ── ۷۶۸ و پایینتر: تبلت عمودی ─────────────────────────────── */
+@media (max-width:768px){
+  .h1{font-size:23px}
+  .h2{font-size:16.5px}
+  .g3{grid-template-columns:repeat(2,1fr)}
+  .auto{grid-template-columns:repeat(auto-fill,minmax(165px,1fr))}
+  .hero{padding:26px 18px;border-radius:var(--r)}
+  .hero p{font-size:13px}
+  .card,.post{padding:13px}
+  .chat{height:min(72vh,560px)}
+  .msg{max-width:90%}
+  .bub{font-size:12.5px}
+  .anime .cover{height:160px;font-size:44px}
+  .prod .pimg{height:132px;font-size:40px}
+  .prof .banner{height:112px}
+  .kpi .n{font-size:22px}
+  .modal .box{max-width:100%;padding:18px;border-radius:18px}
+}
+
+/* ── ۴۳۰ و پایینتر: گوشیهای معمولی ────────────────────────── */
+@media (max-width:430px){
+  :root{--top:58px;--r:14px;--rl:18px}
+  #top{top:8px;inset-inline:8px;padding:0 11px;gap:9px}
+  #top.small{height:48px;top:6px}
+  .brandmark{width:34px;height:34px;font-size:13px;border-radius:11px}
+  .brandtx small{display:none}
+  #stage{padding:calc(var(--top) + 10px) 9px 104px}
+  .h1{font-size:20px}
+  .head{margin:16px 0 10px}
+  .g2,.g3,.g4{grid-template-columns:repeat(2,1fr)}
+  .auto{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))}
+  .hero{min-height:250px;padding:22px 15px}
+  .hero .cta .btn{flex:1;min-width:130px}
+  .anime .cover{height:136px;font-size:38px}
+  .prod .pimg{height:118px;font-size:34px}
+  .kpi{padding:12px}
+  .kpi .n{font-size:20px}
+  .stats{gap:13px}
+  .stats b{font-size:15px}
+  #gninja{width:56px;bottom:100px;inset-inline-end:9px}
+  #gninja .nbub{font-size:10.5px;min-width:104px;max-width:180px;padding:7px 10px}
+  #dock{padding:5px 6px calc(5px + env(safe-area-inset-bottom))}
+  #dock a{font-size:8.8px;padding:5px 1px}
+  #dock a i{font-size:17px}
+  #toasts{inset-inline:9px;max-width:none;bottom:calc(94px + env(safe-area-inset-bottom))}
+  .toast{font-size:11.8px;padding:10px 12px}
+}
+
+/* ── ۳۶۰ و پایینتر: گوشیهای کوچک ─────────────────────────── */
+@media (max-width:360px){
+  .brandtx b{font-size:13px;letter-spacing:1.2px}
+  .h1{font-size:18.5px}
+  .g2,.g3,.g4{grid-template-columns:1fr}
+  .auto{grid-template-columns:repeat(auto-fill,minmax(132px,1fr))}
+  .hero h1{font-size:21px}
+  .card,.post{padding:11px}
+  .news .thumb{width:66px;height:54px;font-size:20px}
+  #dock a{font-size:8.2px}
+  #dock a i{font-size:16px}
+  #gninja{width:50px;bottom:96px}
+}
+
+/* ── ۳۲۰ (کوچکترین) ────────────────────────────────────────── */
+@media (max-width:330px){
+  .auto{grid-template-columns:1fr 1fr}
+  .brandtx b{font-size:12px}
+  .icobtn{width:34px;height:34px;font-size:14px}
+}
+
+/* ── حالت افقی گوشی ─────────────────────────────────────────── */
+@media (max-height:480px) and (orientation:landscape){
+  #gninja{display:none}
+  .hero{min-height:210px}
+  .chat{height:78vh}
+}
+
+/* ── موبایل: متنهای سنگین خوانا ───────────────────────────── */
+@media (max-width:768px){
+  .post .pbody{font-size:13.4px;line-height:1.85}
+  .empty{padding:24px 12px;font-size:12.5px}
+  .modal .box{max-height:86vh}
+}
+
+/* ── چاپ ────────────────────────────────────────────────────── */
+@media print{
+  #city,#top,#rail,#dock,#gninja,#toasts{display:none!important}
+  #stage{padding:0}
+  body{background:#fff;color:#000}
+}
