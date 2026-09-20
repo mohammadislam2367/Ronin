@@ -1,0 +1,199 @@
+/* ═══════════════════════════════════════════════════════════════
+   RONIN STORE — V19 «NEO RAIN CITY»                 css/2-ui.css
+   نوار بالا • منوی کنار • داک موبایل • دکمه • فرم • کارت • مودال
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── چیدمان کلی ─────────────────────────────────────────────── */
+#stage{min-height:100vh;max-width:1520px;margin:0 auto;
+  padding:calc(var(--top) + 22px) 22px 90px calc(var(--rail) + 26px)}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* ── نوار بالا ──────────────────────────────────────────────── */
+#top{position:fixed;top:12px;inset-inline:12px;z-index:60;height:var(--top);
+  display:flex;align-items:center;gap:14px;padding:0 16px;border-radius:var(--rl);
+  background:linear-gradient(135deg,rgba(14,18,44,.84),rgba(9,12,30,.74));
+  border:1px solid var(--ln);
+  backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:0 14px 40px rgba(0,0,0,.5),inset 0 0 0 1px rgba(124,92,255,.12);
+  transition:height .3s,top .3s,padding .3s}
+#top.small{height:52px;top:8px;padding:0 13px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brandmark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+  font-weight:900;font-size:16px;color:#06060f;background:var(--grad);
+  box-shadow:0 0 22px rgba(124,92,255,.55)}
+.brandtx{line-height:1.15}
+.brandtx b{display:block;font-size:15.5px;font-weight:900;letter-spacing:2px;color:transparent;
+  background:linear-gradient(90deg,#fff,var(--cy));-webkit-background-clip:text;background-clip:text}
+.brandtx small{font-size:8.5px;letter-spacing:1.3px;color:var(--mut)}
+.nav{display:flex;align-items:center;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{position:relative;padding:8px 13px;border-radius:11px;font-size:13px;font-weight:700;
+  color:var(--mut);white-space:nowrap;transition:.22s}
+.nav a:hover{color:var(--ink);background:rgba(124,92,255,.13)}
+.nav a.on{color:#fff;box-shadow:inset 0 0 0 1px var(--ln2),0 6px 20px rgba(124,92,255,.28);
+  background:linear-gradient(135deg,rgba(124,92,255,.34),rgba(34,211,238,.2))}
+.nav a.on::after{content:"";position:absolute;bottom:2px;inset-inline:14px;height:2px;
+  border-radius:2px;background:var(--grad)}
+.tools{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.icobtn{position:relative;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  font-size:16px;border:1px solid var(--ln);background:rgba(255,255,255,.05);transition:.2s}
+.icobtn:hover{background:rgba(124,92,255,.24);border-color:var(--ln2);transform:translateY(-2px)}
+.icobtn .dot{position:absolute;top:-3px;inset-inline-start:-3px;min-width:17px;height:17px;padding:0 4px;
+  border-radius:9px;background:var(--bad);color:#fff;font-size:10px;font-weight:900;
+  display:grid;place-items:center}
+
+/* ── منوی کنار ──────────────────────────────────────────────── */
+#rail{position:fixed;inset-inline-start:12px;top:calc(var(--top) + 24px);bottom:14px;
+  width:var(--rail);z-index:55;display:flex;flex-direction:column;gap:7px;padding:14px;
+  border-radius:var(--rl);overflow-y:auto;border:1px solid var(--ln);
+  background:linear-gradient(180deg,rgba(12,16,40,.88),rgba(8,11,28,.78));
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--sh);transition:top .3s}
+body.small #rail{top:76px}
+.railtitle{font-size:9.5px;font-weight:800;letter-spacing:1.4px;color:var(--mut);
+  padding:12px 10px 4px}
+.ditem{position:relative;display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:13px;
+  font-size:13.5px;font-weight:700;color:var(--mut);transition:.2s;overflow:hidden;cursor:pointer}
+.ditem:hover{color:#fff;background:rgba(124,92,255,.15)}
+.ditem.on{color:#fff;box-shadow:inset 0 0 0 1px var(--ln2);
+  background:linear-gradient(90deg,rgba(124,92,255,.32),rgba(34,211,238,.14))}
+.ditem.on::before{content:"";position:absolute;inset-inline-end:0;top:22%;bottom:22%;width:3px;
+  border-radius:3px;background:var(--grad)}
+.ditem i{font-style:normal;font-size:16px;width:20px;text-align:center}
+.ditem .cnt{margin-inline-start:auto;font-size:10.5px;font-weight:800;padding:2px 7px;
+  border-radius:9px;background:rgba(255,95,125,.9);color:#fff}
+.railuser{margin-top:auto;padding:11px;border-radius:15px;border:1px solid var(--ln);
+  background:rgba(255,255,255,.04)}
+.premcard{padding:13px;border-radius:15px;text-align:center;border:1px solid rgba(255,203,82,.35);
+  background:linear-gradient(150deg,rgba(255,203,82,.14),rgba(255,79,216,.1))}
+
+/* ── داک موبایل ─────────────────────────────────────────────── */
+#dock{display:none;position:fixed;bottom:0;inset-inline:0;z-index:70;
+  padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--ln);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  background:linear-gradient(180deg,rgba(10,13,32,.7),rgba(6,8,20,.96))}
+#dock .dwrap{display:flex;gap:2px;max-width:540px;margin:0 auto}
+#dock a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;
+  border-radius:12px;font-size:9.5px;font-weight:700;color:var(--mut);transition:.2s;cursor:pointer}
+#dock a i{font-style:normal;font-size:19px}
+#dock a.on{color:#fff;box-shadow:inset 0 0 0 1px var(--ln2);
+  background:linear-gradient(180deg,rgba(124,92,255,.32),transparent)}
+
+/* ── دکمهها ────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 17px;
+  border-radius:12px;font-size:13.5px;font-weight:800;color:var(--ink);white-space:nowrap;
+  border:1px solid var(--ln);background:rgba(255,255,255,.06);transition:.2s}
+.btn:hover{background:rgba(255,255,255,.13);transform:translateY(-2px)}
+.btn.p{border:0;color:#06060f;background:var(--grad);box-shadow:0 10px 26px rgba(124,92,255,.42)}
+.btn.p:hover{box-shadow:0 14px 34px rgba(124,92,255,.6)}
+.btn.g{background:transparent}
+.btn.d{border:0;color:#1a0410;background:linear-gradient(135deg,var(--bad),#ff8aa0)}
+.btn.ok{border:0;color:#031a11;background:linear-gradient(135deg,var(--ok),#8ff0c6)}
+.btn.gd{border:0;color:#241704;background:linear-gradient(135deg,var(--gold),#ffe6a0)}
+.btn.mini{padding:6px 11px;font-size:11.5px;border-radius:9px}
+.btn.blk{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── فرمها ──────────────────────────────────────────────────── */
+.field{display:flex;flex-direction:column;gap:5px}
+.lbl{font-size:11.5px;font-weight:700;color:var(--mut)}
+.inp,.sel,.area{width:100%;padding:11px 13px;border-radius:12px;font-size:13.5px;transition:.2s;
+  background:rgba(4,7,18,.66);border:1px solid var(--ln)}
+.inp:focus,.sel:focus,.area:focus{outline:0;border-color:var(--cy);
+  box-shadow:0 0 0 3px rgba(34,211,238,.16)}
+.area{min-height:88px;resize:vertical;font-family:inherit}
+.sel{appearance:none;cursor:pointer}
+.check{display:flex;align-items:center;gap:8px;font-size:12.5px;cursor:pointer}
+
+/* ── کارتها و شبکه ──────────────────────────────────────────── */
+.card{position:relative;padding:16px;border-radius:var(--r);border:1px solid var(--ln);
+  background:linear-gradient(150deg,rgba(15,19,46,.74),rgba(8,11,28,.64));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 12px 34px rgba(0,0,0,.35)}
+.card::before{content:"";position:absolute;top:0;inset-inline:18%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,92,255,.7),transparent)}
+.card.hov{transition:.25s}
+.card.hov:hover{transform:translateY(-4px);border-color:var(--ln2);
+  box-shadow:0 20px 46px rgba(0,0,0,.5),inset 0 0 0 1px rgba(124,92,255,.3)}
+.grid{display:grid;gap:13px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.auto{grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+
+/* ── چیپ و برچسب ────────────────────────────────────────────── */
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;color:#ddd8ff;border:1px solid var(--ln2);
+  background:rgba(124,92,255,.16)}
+.chip.gd{color:var(--gold);border-color:rgba(255,203,82,.4);background:rgba(255,203,82,.15)}
+.chip.ok{color:var(--ok);border-color:rgba(61,223,155,.4);background:rgba(61,223,155,.14)}
+.chip.bad{color:var(--bad);border-color:rgba(255,95,125,.4);background:rgba(255,95,125,.14)}
+.chip.cy{color:var(--cy);border-color:rgba(34,211,238,.4);background:rgba(34,211,238,.14)}
+
+/* ── آواتار ─────────────────────────────────────────────────── */
+.av{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;
+  font-weight:900;font-size:14px;color:#06060f;overflow:hidden;
+  background:linear-gradient(135deg,var(--cy),var(--vio))}
+.av img{width:100%;height:100%;object-fit:cover}
+.av.sm{width:28px;height:28px;font-size:11px}
+.av.lg{width:64px;height:64px;font-size:23px}
+
+/* ── بخشها و تیترها ────────────────────────────────────────── */
+.sec{display:none}
+.sec.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.h1{font-size:26px;font-weight:900;letter-spacing:-.4px}
+.h2{font-size:18px;font-weight:800}
+.h3{font-size:14.5px;font-weight:800}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 12px}
+
+/* ── تبها ───────────────────────────────────────────────────── */
+.tabs{display:flex;gap:4px;padding:4px;border-radius:13px;overflow-x:auto;scrollbar-width:none;
+  background:rgba(4,7,18,.6);border:1px solid var(--ln)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:10px;font-size:12.5px;font-weight:800;color:var(--mut);
+  white-space:nowrap;transition:.2s;cursor:pointer}
+.tab.on{color:#06060f;background:var(--grad)}
+
+/* ── مودال ──────────────────────────────────────────────────── */
+.modal{position:fixed;inset:0;z-index:150;display:none;place-items:center;padding:16px;
+  background:rgba(2,4,12,.74);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.modal.on{display:grid}
+.modal .box{width:100%;max-width:400px;max-height:88vh;overflow-y:auto;padding:22px;
+  border-radius:22px;border:1px solid var(--ln2);
+  background:linear-gradient(160deg,rgba(18,23,54,.97),rgba(8,11,28,.98));
+  box-shadow:0 30px 80px rgba(0,0,0,.75);animation:mup .3s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes mup{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── اعلان (توست) ───────────────────────────────────────────── */
+#toasts{position:fixed;z-index:200;pointer-events:none;display:flex;flex-direction:column;gap:8px;
+  inset-inline-start:14px;bottom:calc(88px + env(safe-area-inset-bottom));
+  max-width:min(88vw,340px)}
+.toast{padding:11px 15px;border-radius:13px;font-size:12.5px;font-weight:700;color:#fff;
+  border:1px solid var(--ln2);animation:tin .3s ease;box-shadow:0 14px 34px rgba(0,0,0,.6);
+  background:linear-gradient(135deg,rgba(20,26,60,.96),rgba(12,16,38,.96))}
+.toast.err{border-color:rgba(255,95,125,.55)}
+.toast.ok{border-color:rgba(61,223,155,.55)}
+@keyframes tin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── حالت خالی و بارگذاری ───────────────────────────────────── */
+.empty{padding:34px 16px;text-align:center;font-size:13px;color:var(--mut);border-radius:var(--r);
+  border:1px dashed var(--ln2);background:rgba(9,12,30,.4)}
+.load{padding:26px;text-align:center;font-size:12.5px;color:var(--mut)}
+.spin{width:22px;height:22px;border-radius:50%;display:inline-block;
+  border:2.5px solid rgba(255,255,255,.16);border-top-color:var(--cy);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── واکنشگرا (پایه) ────────────────────────────────────────── */
+@media (max-width:980px){
+  #rail{display:none}
+  #dock{display:block}
+  #stage{padding:calc(var(--top) + 16px) 13px 98px}
+  .nav{display:none}
+}
+@media (max-width:640px){
+  #stage{padding:calc(var(--top) + 10px) 10px 102px}
+  .h1{font-size:21px}
+  .card{padding:14px}
+  .g3,.g4{grid-template-columns:repeat(2,1fr)}
+}
