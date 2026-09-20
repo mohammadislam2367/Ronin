@@ -1,0 +1,16 @@
+{
+  "name": "RONIN STORE — Anime Universe",
+  "short_name": "RONIN",
+  "description": "انیمه • انجمن • فروشگاه • پرمیوم",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04060f",
+  "theme_color": "#05070f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
