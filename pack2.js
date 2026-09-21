@@ -1,8 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   RONIN STORE — PACK 2  |  🥷 آرشیو همراه‌های ویژه (پرمیوم)
+   RONIN STORE — PACK 2 (نسخه تمیز) | 🥷 آرشیو همراه‌های ویژه
    ═══════════════════════════════════════════════════════════════ */
 "use strict";
 (function () {
+if (!window.R) { console.error("[pack2] R نیست"); return; }
 
 /* ── استایل ─────────────────────────────────────────────────── */
 if (!document.getElementById("pack2-css")) {
@@ -24,14 +25,11 @@ if (!document.getElementById("pack2-css")) {
   document.head.appendChild(st);
 }
 
-/* ── کاراکترها (viewBox اصلی: 0 0 120 152) ─────────────────── */
+/* ── کاراکترها ──────────────────────────────────────────────── */
 var CH = {};
+CH.ninja = { n: "نینجا", r: "پایه • رایگان", p: false, html: "" };
 
-CH.ninja = { n: "نینجا", r: "پایه • رایگان", p: false,
-  d: "همراه پیش‌فرض رونین", html: "" };
-
-CH.samurai = { n: "سامورایی", r: "کمیاب • پرمیوم", p: true,
-  d: "شمشیرزن وفادار با کلاه‌خود طلایی", html:
+CH.samurai = { n: "سامورایی", r: "کمیاب • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<rect x="44" y="105" width="12" height="34" rx="6" fill="#232637"/>' +
@@ -51,8 +49,7 @@ CH.samurai = { n: "سامورایی", r: "کمیاب • پرمیوم", p: true,
 '<path d="M24 33q-11-2-13-13q15 2 23 9z" class="jb"/>' +
 '<path d="M96 33q11-2 13-13q-15 2-23 9z" class="jb"/></svg>' };
 
-CH.mage = { n: "جادوگر", r: "کمیاب • پرمیوم", p: true,
-  d: "جادوگر رونین با عصای نور", html:
+CH.mage = { n: "جادوگر", r: "کمیاب • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<rect x="44" y="108" width="12" height="31" rx="6" fill="#232637"/>' +
@@ -71,8 +68,7 @@ CH.mage = { n: "جادوگر", r: "کمیاب • پرمیوم", p: true,
 '<path d="M60 2L36 33h48z" class="jc"/>' +
 '<circle cx="60" cy="8" r="3.4" class="jb"/></svg>' };
 
-CH.cyber = { n: "سایبر", r: "حماسی • پرمیوم", p: true,
-  d: "جنگاور سایبری با بازوی نئونی", html:
+CH.cyber = { n: "سایبر", r: "حماسی • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<rect x="44" y="105" width="12" height="34" rx="6" fill="#1b2233"/>' +
@@ -90,8 +86,7 @@ CH.cyber = { n: "سایبر", r: "حماسی • پرمیوم", p: true,
 '<circle cx="60" cy="7" r="4" class="jc"/>' +
 '<path d="M37 35h46" stroke="#22d3ee" stroke-width="2"/></svg>' };
 
-CH.kitsune = { n: "کیتسونه", r: "حماسی • پرمیوم", p: true,
-  d: "روح روباه با دُم درخشان", html:
+CH.kitsune = { n: "کیتسونه", r: "حماسی • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<path d="M90 112q28-6 24-30q-4-20-24-12q12 22-6 30z" class="jb"/>' +
@@ -109,8 +104,7 @@ CH.kitsune = { n: "کیتسونه", r: "حماسی • پرمیوم", p: true,
 '<path d="M60 50l-5 5h10z" fill="#e63946"/>' +
 '<path d="M42 54q18 10 36 0" stroke="#d2c7b3" stroke-width="2" fill="none"/></svg>' };
 
-CH.oni = { n: "اونی", r: "افسانه‌ای • پرمیوم", p: true,
-  d: "دیو جنگل با شاخ و گرز", html:
+CH.oni = { n: "اونی", r: "افسانه‌ای • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<rect x="44" y="105" width="12" height="34" rx="6" fill="#2a2d47"/>' +
@@ -128,8 +122,7 @@ CH.oni = { n: "اونی", r: "افسانه‌ای • پرمیوم", p: true,
 '<path d="M44 54q16 11 32 0" stroke="#3a0d0d" stroke-width="3.4" fill="none"/>' +
 '<path d="M48 51l-3 6M72 51l3 6" stroke="#fff" stroke-width="2.4"/></svg>' };
 
-CH.cosmic = { n: "کیهانی", r: "افسانه‌ای • پرمیوم", p: true,
-  d: "نگهبان ستاره‌ها با هاله کهکشانی", html:
+CH.cosmic = { n: "کیهانی", r: "افسانه‌ای • پرمیوم", p: true, html:
 '<svg viewBox="0 0 120 152" xmlns="http://www.w3.org/2000/svg">' +
 '<ellipse cx="60" cy="145" rx="33" ry="6.5" fill="rgba(0,0,0,.45)"/>' +
 '<rect x="44" y="105" width="12" height="34" rx="6" fill="#232637"/>' +
@@ -148,30 +141,40 @@ CH.cosmic = { n: "کیهانی", r: "افسانه‌ای • پرمیوم", p: t
 '<circle cx="72" cy="48" r="3" fill="#fff"/>' +
 '<path d="M60 4l4 12 12 4-12 4-4 12-4-12-12-4 12-4z" class="jc"/></svg>' };
 
-/* ── منطق ─────────────────────────────────────────────────── */
+/* ── کمکی‌ها ────────────────────────────────────────────────── */
 function av(id) { return CH[id] || CH.ninja; }
+function isPrem() {
+  return !!(R.prem || R.premium || (R.USER && (R.USER.prem || R.USER.premium)));
+}
+function curChar() {
+  return (R.USER && R.USER.npcChar) || R.npcCharCur || "ninja";
+}
+function svgOf(id) {
+  var c = av(id);
+  if (c.html) return c.html;
+  return String(R.NPC_SVG || "").replace(/<style>[\s\S]*?<\/style>/, "");
+}
 
+/* ── نقاشی آرشیو ────────────────────────────────────────────── */
 R.paintArchive = function () {
   var w = R.$("archWall"); if (!w) return;
-  var cur = (R.USER && R.USER.npcChar) || R.npcCharCur || "ninja";
+  var cur = curChar(), prem = isPrem();
   w.innerHTML = Object.keys(CH).map(function (id) {
-    var c = CH[id];
-    var locked = c.p && !R.prem;
-    var html = c.html || String(R.NPC_SVG || "").replace(/<style>[\s\S]*?<\/style>/, "");
-    var prev = html.replace(/id="nj(Head|Arm)"/g, "");
+    var c = CH[id], locked = c.p && !prem;
     return '<div class="carc' + (cur === id ? " on" : "") + (locked ? " lk" : "") +
       '" data-char="' + id + '">' +
       (locked ? '<span class="lk2">💎</span>' : "") +
-      '<div class="cw">' + prev + '</div>' +
-      '<div class="cn">' + R.esc(c.n) + '</div>' +
-      '<div class="cr">' + R.esc(c.r) + '</div></div>';
+      '<div class="cw">' + svgOf(id) + '</div>' +
+      '<div class="cn">' + (R.esc ? R.esc(c.n) : c.n) + '</div>' +
+      '<div class="cr">' + (R.esc ? R.esc(c.r) : c.r) + '</div></div>';
   }).join("");
 };
 
+/* ── انتخاب کاراکتر ─────────────────────────────────────────── */
 R.pickChar = function (id) {
   var c = av(id);
-  if (c.p && !R.prem) return R.toast("این همراه مخصوص پرمیوم است 💎", "err");
-  if (!R.ME) return R.needLogin("همراه ویژه");
+  if (!R.ME) return R.needLogin ? R.needLogin("همراه ویژه") : alert("وارد شو");
+  if (c.p && !isPrem()) return R.toast("این همراه مخصوص پرمیوم است 💎", "err");
   R.npcCharCur = id;
   R.upd("users/" + R.ME, { npcChar: id }).catch(function () {});
   R._cNow = null;
@@ -187,22 +190,23 @@ R.npcApply = function () {
   if (apply0) { try { apply0(); } catch (e) {} }
   try {
     var n = R.$("gninja"); if (!n) return;
-    var id = (R.USER && R.USER.npcChar) || R.npcCharCur || "ninja";
-    var c = av(id);
-    if (c.p && !R.prem) { id = "ninja"; c = CH.ninja; }
+    var id = curChar();
+    if (av(id).p && !isPrem()) id = "ninja";
     if (R._cNow === id) return;
     var wrap = document.createElement("div");
-    wrap.innerHTML = c.html || R.NPC_SVG || "";
+    wrap.innerHTML = svgOf(id);
     var nsvg = wrap.querySelector("svg");
     var cur = n.querySelector("svg");
     if (nsvg && cur) { cur.parentNode.replaceChild(nsvg, cur); R._cNow = id; }
-  } catch (e) { console.error("[Ronin pack2]", e); }
+  } catch (e) { console.error("[pack2]", e); }
 };
 
-/* ── بخش + آیتم منو ───────────────────────────────────────── */
+/* ── ساخت بخش + آیتم منو ───────────────────────────────────── */
 function build() {
-  var ref = R.$("sec-settings") || R.$("sec-premium");
-  if (ref && !R.$("sec-archive")) {
+  /* بخش */
+  if (!R.$("sec-archive")) {
+    var all = document.querySelectorAll(".sec");
+    var ref = R.$("sec-settings") || R.$("sec-premium") || all[all.length - 1];
     var s = document.createElement("section");
     s.className = "sec"; s.id = "sec-archive";
     s.innerHTML = '<div class="head"><h2 class="h2">🥷 آرشیو همراه</h2>' +
@@ -210,26 +214,33 @@ function build() {
       '<div class="grid auto" id="archWall"></div>' +
       '<div class="card mt"><div class="xs mut">💡 رنگ هر همراه را از ' +
       'تنظیمات → پالت کاراکتر عوض کن.</div></div>';
-    ref.parentNode.insertBefore(s, ref.nextSibling);
+    if (ref && ref.parentNode) ref.parentNode.insertBefore(s, ref.nextSibling);
+    else document.body.appendChild(s);
   }
+  /* آیتم منو */
   var rail = R.$("rail");
   if (rail && !R.$("archItem")) {
     var it = document.createElement("div");
     it.className = "ditem"; it.id = "archItem";
     it.setAttribute("data-go", "archive");
     it.innerHTML = "<i>🥷</i>آرشیو همراه";
-    var base = R.$("dmItem") || rail.querySelector('.ditem[data-go="premium"]');
+    var base = R.$("dmItem") ||
+      rail.querySelector('.ditem[data-go="premium"]') ||
+      rail.querySelector('.ditem[data-go="chat"]');
     if (base && base.parentNode) base.parentNode.insertBefore(it, base.nextSibling);
     else rail.appendChild(it);
   }
-  R.paintArchive();
+  if (R.paintArchive) R.paintArchive();
 }
 
+/* ── کلیک روی کارت‌ها ───────────────────────────────────────── */
 document.addEventListener("click", function (e) {
-  var t = e.target.closest ? e.target.closest("[data-char]") : null;
+  var t = e.target && e.target.closest ? e.target.closest("[data-char]") : null;
   if (t) R.pickChar(t.getAttribute("data-char"));
 });
 
+/* ── اتصال به ناوبری ────────────────────────────────────────── */
+R.hooks = R.hooks || {};
 R.hooks.archive = function () { R.paintArchive(); };
 
 var prevLogin = R.onLogin;
@@ -240,9 +251,10 @@ R.onLogin = function () {
 
 function start() {
   try { build(); } catch (e) { console.error(e); }
-  [600, 1800, 3400].forEach(function (ms) {
+  [500, 1500, 3000, 5000].forEach(function (ms) {
     setTimeout(function () { try { build(); } catch (e) {} }, ms);
   });
+  if (R.bootCompanion) { try { R.bootCompanion(); } catch (e) {} }
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", start);
