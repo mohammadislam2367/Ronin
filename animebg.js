@@ -1,5 +1,5 @@
-/* ═══════════════════════════════════════════════════════════
-   RONIN STORE — ANIME BG v3 🌃 | شهر انیمه‌ای زنده (۳ لایه پارالاکس)
+ /* ═══════════════════════════════════════════════════════════
+   RONIN STORE — ANIME BG v4 🌃 | شهر نئونی زنده + تابلوهای نئون
    ═══════════════════════════════════════════════════════════ */
 "use strict";
 (function () {
@@ -11,26 +11,34 @@
   if (!cv) { cv = document.createElement("canvas"); cv.id = "rbCanvas"; document.body.appendChild(cv); }
   var ctx = cv.getContext("2d");
 
-  if (!document.getElementById("ab3-css")) {
-    var st = document.createElement("style"); st.id = "ab3-css";
+  if (!document.getElementById("ab4-css")) {
+    var st = document.createElement("style"); st.id = "ab4-css";
     st.textContent =
-      "#rbCanvas{position:fixed;inset:0;z-index:-9;pointer-events:none;width:100%;height:100%}" +
-      "#rbVig{position:fixed;inset:0;z-index:-8;pointer-events:none;" +
-      "background:radial-gradient(ellipse at 50% 20%,transparent 34%,rgba(2,3,10,.86))}";
+      "#rbCanvas{position:fixed;inset:0;z-index:-4;pointer-events:none;width:100%;height:100%}" +
+      "#rbVig{position:fixed;inset:0;z-index:-3;pointer-events:none;" +
+      "background:radial-gradient(ellipse at 50% 18%,transparent 34%,rgba(2,3,10,.88))}" +
+      "#city{z-index:-6!important}";
     document.head.appendChild(st);
   }
   if (!document.getElementById("rbVig")) { var v = document.createElement("div"); v.id = "rbVig"; document.body.appendChild(v); }
 
-  var W = 0, H = 0, DPR = 1, seed = 11;
-  var stars = [], petals = [], shooters = [], layers = [], windows = [], streaks = [];
-  var pointer = { x: 0, y: 0, tx: 0, ty: 0 }, moon = { x: .76, y: .19, r: .07 };
+  var W = 0, H = 0, DPR = 1, seed = 17;
+  var stars = [], petals = [], shooters = [], layers = [], windows = [], streaks = [], signs = [];
+  var pointer = { x: 0, y: 0, tx: 0, ty: 0 }, moon = { x: .76, y: .18, r: .07 };
   function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+
+  var SIGNS = [
+    { t: "RONIN", c: "55,191,255" }, { t: "ラーメン", c: "255,214,107" }, { t: "アニメ", c: "255,79,207" },
+    { t: "NEON", c: "34,211,238" }, { t: "寿司", c: "255,120,150" }, { t: "忍者", c: "154,99,255" },
+    { t: "東京", c: "255,170,80" }, { t: "カフェ", c: "120,230,170" }
+  ];
 
   function build() {
-    stars = []; petals = []; shooters = []; layers = []; windows = []; streaks = [];
+    stars = []; petals = []; shooters = []; layers = []; windows = []; streaks = []; signs = [];
     var i;
     var nS = MOB ? 50 : 150;
-    for (i = 0; i < nS; i++) stars.push({ x: rnd() * W, y: rnd() * H * .62, r: rnd() * 1.4 + .3, p: rnd() * 6.28, s: rnd() * .6 + .2 });
+    for (i = 0; i < nS; i++) stars.push({ x: rnd() * W, y: rnd() * H * .6, r: rnd() * 1.4 + .3, p: rnd() * 6.28, s: rnd() * .6 + .2 });
     var nP = MOB ? 12 : 34;
     for (i = 0; i < nP; i++) petals.push({ x: rnd() * W, y: rnd() * H, a: rnd() * 6.28, v: rnd() * .5 + .35, dr: rnd() * .6 + .2 });
     var defs = MOB
@@ -57,6 +65,15 @@
     for (i = 0; i < nSt; i++) streaks.push({ y: H * (.86 + rnd() * .10), len: (rnd() * .3 + .12) * W, x: rnd() * W,
       sp: (rnd() * 3 + 2) * DPR * (rnd() < .5 ? -1 : 1), a: rnd() * .4 + .25,
       col: ["255,120,220", "90,200,255", "160,120,255", "255,220,140"][Math.floor(rnd() * 4)] });
+    var nSign = MOB ? 4 : 8;
+    for (i = 0; i < nSign; i++) {
+      var s = SIGNS[i % SIGNS.length];
+      var long = s.t.length > 3;
+      var w = (long ? rnd() * .09 + .17 : rnd() * .06 + .11) * W;
+      var h = w * (long ? 0.34 : 0.44);
+      signs.push({ x: (rnd() * .70 + .10) * W, y: (rnd() * .34 + .05) * H, w: w, h: h, t: s.t, col: s.c,
+        z: rnd() * .8 + .4, f: rnd() * 6.28, bob: rnd() * .8 + .4 });
+    }
   }
 
   function size() {
@@ -77,6 +94,7 @@
   function draw(now, staticMode) {
     pointer.x += (pointer.tx - pointer.x) * .06; pointer.y += (pointer.ty - pointer.y) * .06;
     var tm = now * .001, i;
+
     var g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, "#1b1340"); g.addColorStop(.42, "#0c0b26"); g.addColorStop(1, "#03040c");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -111,6 +129,29 @@
       ctx.fillStyle = "rgba(" + w.col + ",1)"; ctx.fillRect(w.x + off, w.y, w.w, w.h); });
     ctx.globalAlpha = 1;
 
+    signs.forEach(function (s) {
+      var off = pointer.x * (-20 * s.z) * DPR;
+      var bobY = staticMode ? 0 : Math.sin(tm * s.bob + s.f) * 4 * DPR;
+      var x = s.x + off, y = s.y + bobY;
+      var a = 1;
+      if (!staticMode) { var fl = Math.sin(tm * 9 + s.f) * Math.sin(tm * 3.3 + s.f * 2); if (fl > .93) a = .3 + Math.random() * .35; }
+      ctx.globalAlpha = a;
+      ctx.save();
+      ctx.shadowColor = "rgba(" + s.col + ",0.95)"; ctx.shadowBlur = 20 * DPR;
+      rr(ctx, x, y, s.w, s.h, 10 * DPR);
+      ctx.fillStyle = "rgba(6,9,25,0.55)"; ctx.fill();
+      ctx.lineWidth = 2.4 * DPR; ctx.strokeStyle = "rgba(" + s.col + ",1)"; ctx.stroke();
+      var fs = Math.max(11 * DPR, s.h * .5);
+      ctx.font = "800 " + fs + "px Vazirmatn, system-ui, sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(" + s.col + ",1)";
+      ctx.fillText(s.t, x + s.w / 2, y + s.h / 2 + fs * .04);
+      ctx.restore();
+      ctx.globalAlpha = a * .2; ctx.fillStyle = "rgba(" + s.col + ",1)";
+      rr(ctx, x + 3 * DPR, y + 3 * DPR, s.w - 6 * DPR, s.h - 6 * DPR, 8 * DPR); ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
     streaks.forEach(function (st) {
       if (!staticMode) { st.x += st.sp; if (st.sp > 0 && st.x > W + st.len) st.x = -st.len; if (st.sp < 0 && st.x < -st.len) st.x = W + st.len; }
       var lg = ctx.createLinearGradient(st.x, 0, st.x + st.len, 0);
@@ -136,5 +177,5 @@
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(size, 180); }, { passive: true });
 
   size(); requestAnimationFrame(loop);
-  console.log("%c🌃 RONIN ANIME BG v3 ready", "color:#a78bfa;font-weight:900");
+  console.log("%c🌃 RONIN ANIME BG v4 ready", "color:#a78bfa;font-weight:900");
 })();
